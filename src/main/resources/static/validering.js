@@ -10,7 +10,7 @@ function validerBrukernavn(brukernavn){
     }
 }
 
-function validerPassord(Passord){
+function validerPassord(passord){
     const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/;
     const ok = regexp.test(passord);
     if(!ok){
