@@ -32,27 +32,113 @@
 <nav class="nav nav-pills flex-column mb-auto" style="width: 250px;" id="sidebar">
 
     <li class="nav-item">
-        <a href="#" class="nav-link active" aria-current="page">Dashboard</a>
+        <a href="index.html" class="nav-link active" aria-current="page">Dashboard</a>
     </li>
     <li class="nav-item">
-        <a href="#" class="nav-link link-dark">Monitorering</a>
+        <a href="#" class="nav-link link-dark">Status</a>
     </li>
     <li class="nav-item">
-        <a href="#" class="nav-link link-dark">Konfigurasjoner</a>
+        <a href="config.html" class="nav-link link-dark">Konfigurasjoner</a>
     </li>
     <li class="nav-item">
-        <a href="#" class="nav-link link-dark">Oppdateringer</a>
+        <a href="update.html" class="nav-link link-dark">Oppdateringer</a>
     </li>
     <li class="nav-item">
-        <a href="#" class="nav-link link-dark">Deployment</a>
+        <a href="deployment.html" class="nav-link link-dark">Deployment</a>
     </li>
 </nav>
 
-    <div class="container-fluid" id="main-content">
-        <div class="row row-fluid">
-            <div class="col-lg-12">
-                <p>Du er nå logget inn</p>
+    <div class="container" id="main-content">
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Nylig historikk</h5>
+                        <div class="card-text">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Info</th>
+                                    <th scope="col">Cluster</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Dato</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr>
+                                    <th scope="row">Patch</th>
+                                    <td>Cluster 1</td>
+                                    <td>Success</td>
+                                    <td>21.03.2023</td>
+                                </tr>
+
+                                <tr>
+                                    <th scope="row">Update</th>
+                                    <td>Cluster 3</td>
+                                    <td>Failed</td>
+                                    <td>17.03.2023</td>
+                                </tr>
+
+                                <tr>
+                                    <th scope="row">Security Patch</th>
+                                    <td>Cluster 3</td>
+                                    <td>Success</td>
+                                    <td>12.03.2023</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <a href="#" class="btn btn-primary">All Historikk</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">VM Oversikt elns</h5>
+                        <div class="card-text">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Cluster</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Operativsystem</th>
+                                    <th scope="col">Tag</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr>
+                                    <th scope="row">Cluster 1</th>
+                                    <td>Web Server</td>
+                                    <td>Ubuntu 22.04 LTS</td>
+                                    <td>Nginx</td>
+                                </tr>
+
+                                <tr>
+                                    <th scope="row">Cluster 2</th>
+                                    <td>Database</td>
+                                    <td>Ubuntu 20.04 LTS</td>
+                                    <td>SQLite</td>
+                                </tr>
+
+                                <tr>
+                                    <th scope="row">Cluster 3</th>
+                                    <td>Terraform Deployment</td>
+                                    <td>Amazon Linux</td>
+                                    <td>Launch Platform</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <a href="deployment.html" class="btn btn-primary">Til Deployment</a>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
+
 </body>
 </html>
