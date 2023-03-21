@@ -14,7 +14,7 @@ public class KundeRepository {
     private JdbcTemplate db;
 
     public void lagreKunde(Kunde kunde) {
-        String sql = "INSERT INTO KUNDE (navn,adresse) VALUES(?,?)";
+        String sql = "INSERT INTO Kunde (navn,adresse) VALUES(?,?)";
         db.update(sql, kunde.getNavn(), kunde.getAdresse());
 
     }

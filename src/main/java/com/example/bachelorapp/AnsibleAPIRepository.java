@@ -8,10 +8,11 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
+import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
-
-public class AnsibleAPI {
+@Repository
+public class AnsibleAPIRepository {
 
         private static final String url = "localhost:80";
 
@@ -39,8 +40,6 @@ public class AnsibleAPI {
                      Long jobId = jsonObject.getLong("id");
                         System.out.println("Ansible automation controller id: " + jobId);
                 }
-
-
         }
 
         public static void main(String[] args) {
