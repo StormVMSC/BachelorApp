@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Status</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="stylesheet.css">
+</head>
+<body>
+
+<nav class="nav justify-content-end p6" id="navbar-top">
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Bruker Brukersen</a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="#">Profil</a></li>
+      <li><a class="dropdown-item" href="#">Logg ut</a></li>
+    </ul></li>
+
+  <form class="d-flex" role="search">
+    <input class="form-control sm-2" type="search" placeholder="Søk" aria-label="Søk">
+    <button class="btn btn-outline-primary" type="submit">Søk</button>
+  </form>
+  </div>
+  </div>
+</nav>
+<hr>
+<nav class="nav nav-pills flex-column mb-auto" style="width: 250px;" id="sidebar">
+
+  <li class="nav-item">
+    <a href="index.html" class="nav-link link-dark" aria-current="page">Dashboard</a>
+  </li>
+  <li class="nav-item">
+    <a href="status.html" class="nav-link active">Status</a>
+  </li>
+  <li class="nav-item">
+    <a href="config.html" class="nav-link link-dark">Konfigurasjoner</a>
+  </li>
+  <li class="nav-item">
+    <a href="update.html" class="nav-link link-dark">Oppdateringer</a>
+  </li>
+  <li class="nav-item">
+    <a href="deployment.html" class="nav-link link-dark">Deployment</a>
+  </li>
+</nav>
+
+<div class="container" id="main-content">
+  <div class="row">
+    <div class="col-12">
+      <div class="card text-center">
+        <div class="card-header">
+          Statusoversikt
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Alle clustere er online!</h5>
+          <div class="card-text">
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th scope="col">Cluster</th>
+                <th scope="col">Status</th>
+                <th scope="col">Sist oppdatert</th>
+                <th scope="col">Bruksintensitet</th>
+              </tr>
+              </thead>
+
+              <tbody>
+              <tr>
+                <th scope="row">Cluster 1</th>
+                <td>Online</td>
+                <td>20.03.2023</td>
+                <td>Lav</td>
+              </tr>
+
+              <tr>
+                <th scope="row">Cluster 2</th>
+                <td>Online</td>
+                <td>20.03.2023</td>
+                <td>Middels</td>
+              </tr>
+
+              <tr>
+                <th scope="row">Cluster 3</th>
+                <td>Online</td>
+                <td>21.03.2023</td>
+                <td>Høy</td>
+              </tr>
+
+              </tbody>
+            </table>
+          </div>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+        <div class="card-footer text-muted">
+          2 days ago
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
