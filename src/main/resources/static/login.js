@@ -1,6 +1,6 @@
 function logInn() {
 
-    /*
+
     const brukernavnOK = validerBrukernavn($("#brukernavn").val());
     const passordOK = validerPassord($("#passord").val);
     if (brukernavnOK && passordOK) {
@@ -20,7 +20,7 @@ function logInn() {
                 $("#feil").html("Feil på server, prøv igjen senere");
             });
     }
-     */
+
 
 
 }

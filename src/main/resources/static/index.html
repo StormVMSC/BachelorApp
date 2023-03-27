@@ -9,44 +9,53 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
 
-<nav class="nav justify-content-end p6" id="navbar-top">
+<!---navbar-top--->
+<nav class="nav navbar-light bg-transparent justify-content-end p6" id="navbar-top">
+    <a class="navbar-brand" id="logo"><img src="./img/sopra.png" width="50"></a>
     <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Bruker Brukersen</a>
+        <a class="nav-link link-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person-circle"></i> Bruker Brukersen</a>
     <ul class="dropdown-menu">
         <li><a class="dropdown-item" href="#">Profil</a></li>
         <li><a class="dropdown-item" href="#">Logg ut</a></li>
     </ul></li>
-
+<!---søkebar--->
     <form class="d-flex" role="search">
         <input class="form-control sm-2" type="search" placeholder="Søk" aria-label="Søk">
-        <button class="btn btn-outline-primary" type="submit">Søk</button>
+        <button class="btn btn-outline-secondary" type="submit">Søk</button>
     </form>
     </div>
     </div>
 </nav>
 <hr>
+
+<!---sidebar--->
 <nav class="nav nav-pills flex-column mb-auto" style="width: 250px;" id="sidebar">
 
+
+
+    <li class="nav-item active">
+        <a href="index.html" class="nav-link link-dark" id="btn1"><i class="bi bi-display"></i> Dashboard</a>
+
     <li class="nav-item">
-        <a href="index.html" class="nav-link active" aria-current="page">Dashboard</a>
+        <a href="status.html" class="nav-link link-dark" id="btn2"><i class="bi bi-graph-up"></i> Status</a>
     </li>
     <li class="nav-item">
-        <a href="status.html" class="nav-link link-dark">Status</a>
+        <a href="config.html" class="nav-link link-dark" id="btn3"><i class="bi bi-tools"></i> Konfigurasjoner</a>
     </li>
     <li class="nav-item">
-        <a href="config.html" class="nav-link link-dark">Konfigurasjoner</a>
+        <a href="update.html" class="nav-link link-dark" id="btn4"> <i class="bi bi-arrow-repeat"></i> Oppdateringer</a>
     </li>
     <li class="nav-item">
-        <a href="update.html" class="nav-link link-dark">Oppdateringer</a>
-    </li>
-    <li class="nav-item">
-        <a href="deployment.html" class="nav-link link-dark">Deployment</a>
+        <a href="deployment.html" class="nav-link link-dark" id="btn5"><i class="bi bi-rocket"></i> Deployment</a>
     </li>
 </nav>
+
+<!---navslutt--->
 
     <div class="container" id="main-content">
         <div class="row">

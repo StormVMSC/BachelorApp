@@ -9,3 +9,8 @@ body {
 #main-content {
     margin-left: 280px;
 }
+
+.nav > .active > a {
+    background-image: linear-gradient(to right, #95C11F, #FFFFFF);
+}
+
