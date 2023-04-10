@@ -1,16 +1,84 @@
 body {
     overflow-x: hidden;
+    min-height: 100vh;
+    font-family: Tahoma;
 }
 
-#sidebar {
+container {
+    max-width: 1900px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+nav {
     position: fixed;
-}
-
-#main-content {
-    margin-left: 280px;
+    top: 0;
+    left:0;
+    height: 100%;
+    width: 250px;
+    font-size: 18px;
 }
 
 .nav > .active > a {
-    background-image: linear-gradient(to right, #95C11F, #FFFFFF);
+    background: transparent linear-gradient(270deg, #FFFFFF 50%, #95C11F 100%) 0% 0% no-repeat padding-box;
+    opacity: 1;
 }
+
+.nav > .inactive a {
+    background:  transparent linear-gradient(270deg, #FFFFFF 50%, #E2E2E2 100%) 0% 0% no-repeat padding-box;
+    opacity: 1;
+}
+
+.navbar-brand{
+    margin: 15px;
+    color: black;
+    display: flex;
+    align-items: center;
+}
+
+#logo-image{
+    display: flex;
+    min-width: 50px;
+}
+
+#logo-image img{
+    width: 50px;
+    object-fit: cover;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+#admin-mod{
+    margin-top: auto;
+}
+
+.bi{
+    height: 100%;
+    min-width: auto;
+    font-size: 24px;
+    align-items: center;
+    justify-content: center;
+}
+
+.dash{
+    position: relative;
+    left: 250px;
+    width: calc(100% - 250px);
+    padding: 10px;
+    font-size: 14px;
+}
+.dash .top{
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#main-content
+{
+    margin-left: 250px;
+}
+
 

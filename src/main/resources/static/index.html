@@ -14,50 +14,45 @@
 </head>
 <body>
 
-<!---navbar-top--->
-<nav class="nav navbar-light bg-transparent justify-content-end p6" id="navbar-top">
-    <a class="navbar-brand" id="logo"><img src="./img/sopra.png" width="50"></a>
-    <li class="nav-item dropdown">
-        <a class="nav-link link-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person-circle"></i> Bruker Brukersen</a>
-    <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">Profil</a></li>
-        <li><a class="dropdown-item" href="#">Logg ut</a></li>
-    </ul></li>
-<!---søkebar--->
-    <form class="d-flex" role="search">
-        <input class="form-control sm-2" type="search" placeholder="Søk" aria-label="Søk">
-        <button class="btn btn-outline-secondary" type="submit">Søk</button>
-    </form>
-    </div>
-    </div>
-</nav>
-<hr>
-
-<!---sidebar--->
-<nav class="nav nav-pills flex-column mb-auto" style="width: 250px;" id="sidebar">
-
-
-
+<container>
+<nav class="nav nav-pills flex-column mb-auto">
+    <a class="navbar-brand" id="logo-image"><img src="./img/sopra-logo.png">Sopra Steria</a>
     <li class="nav-item active">
         <a href="index.html" class="nav-link link-dark" id="btn1"><i class="bi bi-display"></i> Dashboard</a>
 
-    <li class="nav-item">
+    <li class="nav-item inactive">
         <a href="status.html" class="nav-link link-dark" id="btn2"><i class="bi bi-graph-up"></i> Status</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item inactive">
         <a href="config.html" class="nav-link link-dark" id="btn3"><i class="bi bi-tools"></i> Konfigurasjoner</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item inactive">
         <a href="update.html" class="nav-link link-dark" id="btn4"> <i class="bi bi-arrow-repeat"></i> Oppdateringer</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item inactive">
         <a href="deployment.html" class="nav-link link-dark" id="btn5"><i class="bi bi-rocket"></i> Deployment</a>
     </li>
+    <li class="nav-item dropdown" id="admin-mod">
+        <a class="nav-link link-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person-circle"></i> Admin</a>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Profil</a></li>
+            <li><a class="dropdown-item" href="#">Logg ut</a></li>
+        </ul></li>
 </nav>
-
 <!---navslutt--->
 
-    <div class="container" id="main-content">
+<div id="page-wrap">
+<section class="dash">
+    <div class="top">
+        <form class="d-flex" role="search">
+            <input class="form-control sm-1" type="search" placeholder="Søk.." aria-label="Søk">
+            <button class="btn btn-outline-secondary" type="submit">Søk</button>
+        </form>
+    </div>
+</section>
+
+
+    <div id="main-content">
         <div class="row">
             <div class="col-sm-5">
                 <div class="card">
@@ -148,6 +143,7 @@
             </div>
         </div>
     </div>
-
+</div>
+</container>
 </body>
 </html>
