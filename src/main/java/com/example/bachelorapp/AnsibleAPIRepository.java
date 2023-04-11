@@ -34,37 +34,49 @@ public class AnsibleAPIRepository {
         private static final String url = "18.134.222.22";
         private static final String username = "admin";
         private static final String password = "redhat";
+
+        // this method returns a list of Host objects by making an API call to Ansible
         public List<Host> getHostList() throws Exception {
+                // Create an empty ArrayList to store the host
                 List<Host> hostList = new ArrayList<>();
+
+                // Get the Authorization token needed to authenticate the API
                 String authtoken = getAuthToken();
+
+                // Create an SSL context to disable SSL
                 SSLContext sslContext = null;
                 try {
-                        sslContext = SSLContext.getInstance("SSL");
-                        sslContext.init(null, new TrustManager[] { new X509TrustManager() {
-                                public X509Certificate[] getAcceptedIssuers() {
-                                        return null;
-                                }
-                                public void checkClientTrusted(X509Certificate[] certs, String authType) {
-                                }
-                                public void checkServerTrusted(X509Certificate[] certs, String authType) {
-                                }
-                        } }, new SecureRandom());
+                     sslContext = createSSLContext();
                 } catch (NoSuchAlgorithmException | KeyManagementException e) {
                         e.printStackTrace();
                 }
 
+                //Create an HTTP cliens using the custom SSL context and ignore hostname authentication
                 CloseableHttpClient httpClient = HttpClients.custom()
                         .setSSLContext(sslContext)
                         .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
                         .build();
-                HttpGet httpGet = new HttpGet("https://"+url+"/api/v2/hosts/");
+
+                // Create an HTTP GET request to fetch the list of hosts
+                HttpGet httpGet = new HttpGet("https://" + url + "/api/v2/hosts/");
+
+                // Set headers for the request, including the authorization token
                 httpGet.setHeader("Content-type", "application/json");
                 httpGet.setHeader("Authorization", "Bearer " + authtoken);
+
+                // Execture the request and get the response
                 CloseableHttpResponse response = httpClient.execute(httpGet);
+
+                // Convert the response to a String
                 String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+
+                // Parse the response String as a JSON object using an ObjectMapper
                 ObjectMapper mapper = new ObjectMapper();
                 JsonNode rootNode = mapper.readTree(responseString);
+                // Get the "results" node from the JSON object
                 JsonNode resultsNode = rootNode.get("results");
+
+                // Loop through each host node in the results and add it to the hostList
                 for (JsonNode hostNode : resultsNode) {
                         int id = hostNode.get("id").asInt();
                         String hostName = hostNode.get("name").asText();
@@ -73,26 +85,22 @@ public class AnsibleAPIRepository {
                 }
                 return hostList;
         }
+
+        //this methods gets token for performing api tasks
         public String getAuthToken() throws IOException {
 
+                // Create a String variable for authentication token
                 String authToken = null;
 
+                // Create an SSL context to disable SSL
                 SSLContext sslContext = null;
                 try {
-                        sslContext = SSLContext.getInstance("SSL");
-                        sslContext.init(null, new TrustManager[] { new X509TrustManager() {
-                                public X509Certificate[] getAcceptedIssuers() {
-                                        return null;
-                                }
-                                public void checkClientTrusted(X509Certificate[] certs, String authType) {
-                                }
-                                public void checkServerTrusted(X509Certificate[] certs, String authType) {
-                                }
-                        } }, new SecureRandom());
+                  sslContext = createSSLContext();
                 } catch (NoSuchAlgorithmException | KeyManagementException e) {
                         e.printStackTrace();
                 }
 
+                //Create an HTTP cliens using the custom SSL context and ignore hostname authentication
                 CloseableHttpClient httpClient = HttpClients.custom()
                         .setSSLContext(sslContext)
                         .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
@@ -121,6 +129,21 @@ public class AnsibleAPIRepository {
                         throw new RuntimeException(response.toString());
                 }
         }
-}
 
+        private static SSLContext createSSLContext() throws NoSuchAlgorithmException, KeyManagementException {
+                SSLContext sslContext = SSLContext.getInstance("SSL");
+                sslContext.init(null, new TrustManager[]{new X509TrustManager() {
+                        public X509Certificate[] getAcceptedIssuers() {
+                                return null;
+                        }
+
+                        public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                        }
+
+                        public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                        }
+                }}, new SecureRandom());
+                return sslContext;
+        }
+}
 
