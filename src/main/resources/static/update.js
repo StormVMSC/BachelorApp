@@ -8,6 +8,7 @@ function getHostList(){
         success: function(data) {
             // Handle successful response
             console.log(data); // This will print the response to the console
+            data.sort((a, b) => a.id - b.id);
             formatHostList(data);
         },
         error: function(jqXHR, textStatus, errorThrown) {
