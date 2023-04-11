@@ -57,7 +57,7 @@ public class AnsibleAPIRepository {
                 httpGet.setHeader("Content-type", "application/json");
                 httpGet.setHeader("Authorization", "Bearer " + authtoken);
 
-                // Execture the request and get the response
+                // Execute the request and get the response
                 CloseableHttpResponse response = httpClient.execute(httpGet);
 
                 // Convert the response to a String
@@ -77,6 +77,53 @@ public class AnsibleAPIRepository {
                         hostList.add(newHost);
                 }
                 return hostList;
+        }
+
+        public List<Inventory> getInventory() throws IOException {
+                List<Inventory> inventoryList = new ArrayList<>();
+
+                String authToken = getAuthToken();
+
+                SSLContext  sslContext = null;
+                try{
+                        sslContext = createSSLContext();
+                }catch(NoSuchAlgorithmException | KeyManagementException e){
+                        e.printStackTrace();
+                }
+
+                CloseableHttpClient httpClient = HttpClients.custom()
+                        .setSSLContext(sslContext)
+                        .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+                        .build();
+
+
+                // Create an HTTP GET request to fetch the list of hosts
+                HttpGet httpGet = new HttpGet("https://" + url + "/api/v2/inventories/");
+
+                // Set headers for the request, including the authorization token
+                httpGet.setHeader("Content-type", "application/json");
+                httpGet.setHeader("Authorization", "Bearer " + authToken);
+
+                //Execute the request and get the response
+                CloseableHttpResponse response = httpClient.execute(httpGet);
+
+                // Convert the response to a String
+                String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+
+                // Parse the response String as a JSON object using an ObjectMapper
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode rootNode = mapper.readTree(responseString);
+                // Get the "results" node from the JSON object
+                JsonNode resultsNode = rootNode.get("results");
+
+                // Loop through each host node in the results and add it to the hostList
+                for (JsonNode inventoryNode : resultsNode) {
+                        int id = inventoryNode.get("id").asInt();
+                        String inventoryName = inventoryNode.get("name").asText();
+                        Inventory newinventory = new Inventory(id, inventoryName);
+                        inventoryList.add(newinventory);
+                }
+                return inventoryList;
         }
 
         //this methods gets token for performing api tasks

@@ -19,4 +19,9 @@ public class AnsibleAPIController {
     public List<Host> gethosts() throws Exception {
         return repo.getHostList();
     }
+
+    @GetMapping("/GetInventory")
+    public List<Inventory> getInventories() throws IOException{
+        return repo.getInventory();
+    }
 }
