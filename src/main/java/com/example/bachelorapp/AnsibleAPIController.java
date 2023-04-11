@@ -1,15 +1,22 @@
 package com.example.bachelorapp;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
-@Controller
+@RestController
 public class AnsibleAPIController {
-
-    @PostMapping("/job")
-    public void job(String username, String password, int jobtemplate) throws IOException {
-        AnsibleAPIRepository.job(username, password,jobtemplate);
+    @Autowired
+    private AnsibleAPIRepository repo;
+    @GetMapping("/GetHostList")
+    public List<Host> gethosts() throws Exception {
+        return repo.getHostList();
     }
 }

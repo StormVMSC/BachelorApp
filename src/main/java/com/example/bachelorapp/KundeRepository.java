@@ -28,4 +28,5 @@ public class KundeRepository {
         String sql = "DELETE from KUNDE";
         db.update(sql);
     }
+
 }
