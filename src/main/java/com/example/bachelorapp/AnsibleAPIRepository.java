@@ -4,14 +4,21 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+
+import org.apache.http.HttpEntity;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -21,6 +28,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.net.ssl.*;
 import java.io.IOException;
+import java.util.Map;
 
 @Repository
 public class AnsibleAPIRepository {
@@ -184,6 +192,101 @@ public class AnsibleAPIRepository {
                         }
                 }}, new SecureRandom());
                 return sslContext;
+        }
+
+
+        public static void patchRestCall(Patch innPatch) throws KeyManagementException, NoSuchAlgorithmException {
+
+                TrustManager[] trustAllCerts = new TrustManager[] {
+                        new X509TrustManager() {
+                                public X509Certificate[] getAcceptedIssuers() {
+                                        return null;
+                                }
+
+                                public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                                }
+
+                                public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                                }
+                        }
+                };
+
+                SSLContext sslContext = SSLContext.getInstance("TLS");
+                sslContext.init(null, trustAllCerts, new SecureRandom());
+
+
+                HttpClient client = HttpClients.custom()
+                        .setSSLContext(sslContext)
+                        .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+                        .build();
+
+                CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+                credentialsProvider.setCredentials(
+                        org.apache.http.auth.AuthScope.ANY,
+                        new UsernamePasswordCredentials(innPatch.getUsername(), innPatch.getUsername())
+                );
+
+                String url = "https://18.134.222.22/api/v2/job_templates/" + innPatch.getJobId() + "/launch/";
+
+                HttpPost request = new HttpPost(url);
+
+                try {
+                        ObjectMapper objectMapper = new ObjectMapper();
+
+                        Map<String, Object> jsonPayload = new HashMap<>();
+                        Map<String, Object> extraVars = new HashMap<>();
+
+                        List<String> hosts = innPatch.getHosts();
+                        extraVars.put("host_name", hosts);
+                        jsonPayload.put("extra_vars", extraVars);
+                        //jsonPayload.put("my_hosts", "{{ host-name }}");
+
+                        String jsonString = objectMapper.writeValueAsString(jsonPayload);
+
+
+                        StringEntity utEntity = new StringEntity(jsonString);
+                        utEntity.setContentType("application/json");
+                        request.setEntity(utEntity);
+
+                        System.out.println(utEntity);
+
+                        request.addHeader(BasicScheme.authenticate(
+                                new UsernamePasswordCredentials(innPatch.getUsername(), innPatch.getPassword()),
+                                "UTF-8", false
+                        ));
+                        System.out.println("\"" + jsonString + "\"");
+                        System.out.println(request);
+                        CloseableHttpResponse response = (CloseableHttpResponse) client.execute(request);
+
+                        System.out.println(response);
+                        /*Thread.sleep(90000);
+
+                        HttpEntity innEntity = response.getEntity();
+                        String responseBody = EntityUtils.toString(innEntity);
+                        JsonNode jsonNode = objectMapper.readTree(responseBody);
+
+
+                        String stdoutUrl = jsonNode.get("stdout").asText();
+                        String returnUrl = "https://18.134.222.22" + stdoutUrl;
+
+                        System.out.println(stdoutUrl + ";;;;;" + returnUrl + ";;;;;;");
+
+                        HttpGet stdRequest = new HttpGet(returnUrl);
+
+                        System.out.println(stdRequest + ";;;;;;");
+
+                        stdRequest.addHeader(BasicScheme.authenticate(
+                                new UsernamePasswordCredentials(innPatch.getUsername(), innPatch.getPassword()),
+                                "UTF-8", false
+                        ));
+
+                        CloseableHttpResponse stdResponse = (CloseableHttpResponse) client.execute(stdRequest);
+
+                        System.out.println(stdResponse);*/
+                }
+                catch (IOException e) {
+                        System.out.println("Error making REST API call: " + e.getMessage());
+                }
         }
 }
 
