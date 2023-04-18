@@ -4,21 +4,16 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
-import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
-
-import org.apache.http.HttpEntity;
+import org.json.JSONArray;
 import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
-import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -29,7 +24,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.net.ssl.*;
 import java.io.IOException;
-import java.util.Map;
 
 @Repository
 public class AnsibleAPIRepository {
@@ -239,6 +233,45 @@ public class AnsibleAPIRepository {
                 }
         }
 
+
+        public List<Historikk> getHistorikk() throws IOException {
+                List<Historikk> historikkList = new ArrayList<>();
+                String authToken = getAuthToken();
+
+                SSLContext  sslContext = null;
+                try{
+                        sslContext = createSSLContext();
+                }catch(NoSuchAlgorithmException | KeyManagementException e){
+                        e.printStackTrace();
+                }
+
+                CloseableHttpClient httpClient = HttpClients.custom()
+                        .setSSLContext(sslContext)
+                        .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+                        .build();
+
+                HttpGet httpGet = new HttpGet("https://" + url + "/api/v2/jobs/");
+                httpGet.setHeader("Content-type", "application/json");
+                httpGet.setHeader("Authorization", "Bearer " + authToken);
+
+                CloseableHttpResponse response = httpClient.execute(httpGet);
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode jsonNode = mapper.readTree(response.getEntity().getContent());
+                JsonNode resultsNode = jsonNode.get("results");
+
+                for (JsonNode historikkNode : resultsNode) {
+                        int id = historikkNode.get("id").asInt();
+                        String navn = historikkNode.get("name").asText();
+                        String status = historikkNode.get("status").asText();
+                        String inventory = historikkNode.get("inventory").asText();
+                        String startTime = historikkNode.get("started").asText();
+                        String finnishTime =  historikkNode.get("finished").asText();
+                        Historikk historikk = new Historikk(id, navn, status, inventory, startTime, finnishTime);
+                        historikkList.add(historikk);
+                }
+
+                return historikkList;
+        }
 }
 
 

@@ -31,5 +31,9 @@ public class AnsibleAPIController {
         repo.patchSomeCall();
     }
 
+    @GetMapping("/GetHistorikk")
+    public List<Historikk> getHistorikk() throws IOException {
+        return repo.getHistorikk();
+    }
 
 }
