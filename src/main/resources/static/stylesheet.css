@@ -3,6 +3,15 @@ body{
     min-height: 100vh;
 }
 
+
+.bg-image-vertical {
+    position: relative;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: auto 100%;
+}
+
 :root{
     --offcanvas-width: 250px;
     --topNavBarHeight: 56px;
