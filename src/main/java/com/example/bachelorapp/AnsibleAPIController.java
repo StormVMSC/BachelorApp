@@ -3,6 +3,7 @@ package com.example.bachelorapp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -24,4 +25,14 @@ public class AnsibleAPIController {
     public List<Inventory> getInventories() throws IOException{
         return repo.getInventory();
     }
+
+    @PostMapping("/patching")
+    public void patchServer(@RequestBody Patch patch) throws NoSuchAlgorithmException, KeyManagementException {
+        System.out.println("JAAAAA");
+        System.out.print("Hosts; " + patch.getHosts() + "JobId; " + patch.getJobId());
+        System.out.print(patch);
+
+        AnsibleAPIRepository.patchRestCall(patch);
+    }
+
 }
