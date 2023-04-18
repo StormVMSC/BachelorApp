@@ -1,84 +1,38 @@
-body {
-    overflow-x: hidden;
-    min-height: 100vh;
+body{
     font-family: Tahoma;
+    min-height: 100vh;
 }
 
-container {
-    max-width: 1900px;
-    margin-right: auto;
-    margin-left: auto;
+:root{
+    --offcanvas-width: 250px;
+    --topNavBarHeight: 56px;
 }
 
-nav {
-    position: fixed;
-    top: 0;
-    left:0;
-    height: 100%;
-    width: 250px;
-    font-size: 18px;
+.sidebar-menu{
+    width: var(--offcanvas-width);
 }
 
-.nav > .active > a {
-    background: transparent linear-gradient(270deg, #FFFFFF 50%, #95C11F 100%) 0% 0% no-repeat padding-box;
-    opacity: 1;
+@media (min-width: 992px) {
+    body{
+        overflow: auto !important;
+    }
+
+    .sidebar-menu{
+        transform: none;
+        visibility: visible !important;
+        top:var(--topNavBarHeight);
+        height: calc(100% - var(--topNavBarHeight));
+    }
+
+    main{
+        margin-left: var(--offcanvas-width);
+    }
 }
 
-.nav > .inactive a {
-    background:  transparent linear-gradient(270deg, #FFFFFF 50%, #E2E2E2 100%) 0% 0% no-repeat padding-box;
-    opacity: 1;
+#ic-burger{
+    color: purple;
 }
 
-.navbar-brand{
-    margin: 15px;
-    color: black;
-    display: flex;
-    align-items: center;
-}
 
-#logo-image{
-    display: flex;
-    min-width: 50px;
-}
-
-#logo-image img{
-    width: 50px;
-    object-fit: cover;
-}
-
-.nav-item {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-#admin-mod{
-    margin-top: auto;
-}
-
-.bi{
-    height: 100%;
-    min-width: auto;
-    font-size: 24px;
-    align-items: center;
-    justify-content: center;
-}
-
-.dash{
-    position: relative;
-    left: 250px;
-    width: calc(100% - 250px);
-    padding: 10px;
-    font-size: 14px;
-}
-.dash .top{
-    margin-top: 15px;
-    display: flex;
-    justify-content: space-between;
-}
-
-#main-content
-{
-    margin-left: 250px;
-}
 
 

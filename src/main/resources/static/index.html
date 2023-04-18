@@ -6,55 +6,88 @@
     <title>Sopra Automation Platform</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
 
-<container>
-<nav class="nav nav-pills flex-column mb-auto">
-    <a class="navbar-brand" id="logo-image"><img src="./img/sopra-logo.png">Sopra Steria</a>
-    <li class="nav-item active">
-        <a href="index.html" class="nav-link link-dark" id="btn1"><i class="bi bi-display"></i> Dashboard</a>
+<!---top-nav--->
+    <nav class="navbar navbar-expand-lg fixed-top" style="background-color: #a8a8a7">
+        <div class="container-fluid">
+            <!---logo--->
+            <a class="navbar-brand me-2 px-1 link-dark" href="#">Sopra Steria</a>
 
-    <li class="nav-item inactive">
-        <a href="status.html" class="nav-link link-dark" id="btn2"><i class="bi bi-graph-up"></i> Status</a>
-    </li>
-    <li class="nav-item inactive">
-        <a href="config.html" class="nav-link link-dark" id="btn3"><i class="bi bi-tools"></i> Konfigurasjoner</a>
-    </li>
-    <li class="nav-item inactive">
-        <a href="update.html" class="nav-link link-dark" id="btn4"> <i class="bi bi-arrow-repeat"></i> Oppdateringer</a>
-    </li>
-    <li class="nav-item inactive">
-        <a href="deployment.html" class="nav-link link-dark" id="btn5"><i class="bi bi-rocket"></i> Deployment</a>
-    </li>
-    <li class="nav-item dropdown" id="admin-mod">
-        <a class="nav-link link-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person-circle"></i> Admin</a>
-        <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Profil</a></li>
-            <li><a class="dropdown-item" href="#">Logg ut</a></li>
-        </ul></li>
-</nav>
-<!---navslutt--->
+<!---trigger sidebar --->
+            <button class="navbar-toggler me-auto btn btn-outline-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas" aria-expanded="false" aria-label="Toggle navigation">
+                <span><i class="bi bi-justify"></i></span>
+            </button>
 
-<div id="page-wrap">
-<section class="dash">
-    <div class="top">
-        <form class="d-flex" role="search">
-            <input class="form-control sm-1" type="search" placeholder="Søk.." aria-label="Søk">
-            <button class="btn btn-outline-secondary" type="submit">Søk</button>
-        </form>
+<!---collapse--->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span><i class="bi bi-person-fill"></i></span>
+            </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+<!---søk--->
+            <form class="d-flex" role="search">
+                <div class="input-group my-3 my-lg-0">
+                <input class="form-control" type="search" placeholder="Søk" aria-label="Search">
+                <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
+                </div>
+            </form>
+
+<!---Admin-profil--->
+            <li class="nav-item dropdown">
+                <a class="nav-link link-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person-fill"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </li>
+            </ul>
+            </div>
+        </div>
+    </nav>
+
+<!---offcanvas-sidebar--->
+    <div class="offcanvas offcanvas-start sidebar-menu" tabindex="-1" id="offcanvas" aria-labelledby="offcanvas">
+        <div class="offcanvas-body p-0" style="background-color: #a8a8a7">
+            <nav class="navbar">
+                <ul class="navbar-nav">
+                    <li>
+                        <a href="index.html" class="nav-link link-dark px-3"><span class="me-3"><i class="bi bi-speedometer"></i></span><span>Dashboard</span> </a>
+                    </li>
+                    <li>
+                        <a href="status.html" class="nav-link link-dark px-3"><span class="me-3"><i class="bi bi-graph-up"></i></span><span>Status</span> </a>
+                    </li>
+                    <li>
+                        <a href="config.html" class="nav-link link-dark px-3"><span class="me-3"><i class="bi bi-tools"></i></span><span>Konfigurasjoner</span> </a>
+                    </li>
+                    <li>
+                        <a href="update.html" class="nav-link link-dark px-3"><span class="me-3"><i class="bi bi-arrow-repeat"></i></span><span>Oppdateringer</span> </a>
+                    </li>
+                    <li>
+                        <a href="deployment.html" class="nav-link link-dark px-3"><span class="me-3"><i class="bi bi-rocket"></i></span><span>Deployment</span> </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
-</section>
 
-
-    <div id="main-content">
+<!---sideinnhold--->
+<main class="mt-5 pt-3">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-5">
+            <div class="col-md-12 fw-bold fs-3">Dashboard</div>
+            <div class="row">
+                <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title text-center">Nylig historikk</h5>
@@ -142,8 +175,11 @@
                 </div>
             </div>
         </div>
+
+
     </div>
-</div>
-</container>
+    </div>
+    </div>
+</main>
 </body>
 </html>
