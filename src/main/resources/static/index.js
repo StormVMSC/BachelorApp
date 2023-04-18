@@ -1,6 +1,6 @@
 
 /////////// BARE FOR TESTING, IKKE FJERN
-/*let patch = {
+let patch = {
     jobId: 22,
     username: "BrukerA",
     password: "PassordA",
@@ -10,7 +10,7 @@
 
 $.ajax({
     type: "POST",
-    url: "/patching",
+    url: "/PatchFlere",
     data: JSON.stringify(patch),
     contentType: "application/json",
     success: function() {
@@ -19,4 +19,4 @@ $.ajax({
     error: function(xhr, status, error) {
         console.log("Feil: " + error);
     }
-});*//////////////
+})//////////////

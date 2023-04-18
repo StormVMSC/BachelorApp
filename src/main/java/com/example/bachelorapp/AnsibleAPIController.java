@@ -31,13 +31,5 @@ public class AnsibleAPIController {
         repo.patchSomeCall();
     }
 
-    @PostMapping("/patching")
-    public void patchServer(@RequestBody Patch patch) throws NoSuchAlgorithmException, KeyManagementException {
-        System.out.println("JAAAAA");
-        System.out.print("Hosts; " + patch.getHosts() + "JobId; " + patch.getJobId());
-        System.out.print(patch);
-
-        AnsibleAPIRepository.patchRestCall(patch);
-    }
 
 }
