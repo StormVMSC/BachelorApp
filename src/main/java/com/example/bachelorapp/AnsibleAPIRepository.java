@@ -24,6 +24,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.json.JSONObject;
 import org.springframework.stereotype.Repository;
 
 import javax.net.ssl.*;
@@ -288,5 +289,53 @@ public class AnsibleAPIRepository {
                         System.out.println("Error making REST API call: " + e.getMessage());
                 }
         }
+
+
+        public void patchSomeCall() throws IOException {
+
+                List<String> host = new ArrayList<>();
+                host.add("Host A (1)");
+                host.add("Host A (2)");
+
+                String authToken = getAuthToken();
+
+                SSLContext  sslContext = null;
+                try{
+                        sslContext = createSSLContext();
+                }catch(NoSuchAlgorithmException | KeyManagementException e){
+                        e.printStackTrace();
+                }
+
+                CloseableHttpClient httpClient = HttpClients.custom()
+                        .setSSLContext(sslContext)
+                        .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+                        .build();
+
+                HttpPost request = new HttpPost( "https://"+ url + "/api/v2/job_templates/22/launch/");
+                request.addHeader("content-type", "application/json");
+                request.setHeader("Authorization", "Bearer " + authToken);
+
+                String hostName = String.join(",", host);
+                JSONObject extraVars = new JSONObject();
+                extraVars.put("host_name", hostName);
+
+                JSONObject jsonBody = new JSONObject();
+                jsonBody.put("extra_vars", extraVars);
+
+                StringEntity entity = new StringEntity(jsonBody.toString());
+                request.setEntity(entity);
+
+
+                CloseableHttpResponse response = httpClient.execute(request);
+                String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+
+                if (responseString != null) {
+                        System.out.println(responseString);
+                }
+        }
+
 }
+
+
+
 

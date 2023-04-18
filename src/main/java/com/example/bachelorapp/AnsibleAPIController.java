@@ -26,6 +26,11 @@ public class AnsibleAPIController {
         return repo.getInventory();
     }
 
+    @PostMapping("/PatchFlere")
+    public void patchSomeCall() throws IOException {
+        repo.patchSomeCall();
+    }
+
     @PostMapping("/patching")
     public void patchServer(@RequestBody Patch patch) throws NoSuchAlgorithmException, KeyManagementException {
         System.out.println("JAAAAA");
