@@ -26,13 +26,14 @@ public class AnsibleAPIController {
         return repo.getInventory();
     }
 
-    @PostMapping("/patching")
-    public void patchServer(@RequestBody Patch patch) throws NoSuchAlgorithmException, KeyManagementException {
-        System.out.println("JAAAAA");
-        System.out.print("Hosts; " + patch.getHosts() + "JobId; " + patch.getJobId());
-        System.out.print(patch);
+    @PostMapping("/PatchFlere")
+    public void patchSomeCall() throws IOException {
+        repo.patchSomeCall();
+    }
 
-        AnsibleAPIRepository.patchRestCall(patch);
+    @GetMapping("/GetHistorikk")
+    public List<Historikk> getHistorikk() throws IOException {
+        return repo.getHistorikk();
     }
 
 }
