@@ -27,8 +27,8 @@ public class AnsibleAPIController {
     }
 
     @PostMapping("/PatchFlere")
-    public void patchSomeCall() throws IOException {
-        repo.patchSomeCall();
+    public void patchSomeCall(Patch patch) throws IOException {
+        repo.patchSomeCall(patch);
     }
 
     @GetMapping("/GetHistorikk")

@@ -190,11 +190,7 @@ public class AnsibleAPIRepository {
         }
 
 
-        public void patchSomeCall() throws IOException {
-
-                List<String> host = new ArrayList<>();
-                host.add("Host A (1)");
-                host.add("Host A (2)");
+        public void patchSomeCall(Patch patchData) throws IOException {
 
                 String authToken = getAuthToken();
 
@@ -210,11 +206,11 @@ public class AnsibleAPIRepository {
                         .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
                         .build();
 
-                HttpPost request = new HttpPost( "https://"+ url + "/api/v2/job_templates/22/launch/");
+                HttpPost request = new HttpPost( "https://"+ url + "/api/v2/job_templates/"+ patchData.getJobId() +"/launch/");
                 request.addHeader("content-type", "application/json");
                 request.setHeader("Authorization", "Bearer " + authToken);
 
-                String hostName = String.join(",", host);
+                String hostName = String.join(",", patchData.getAllName());
                 JSONObject extraVars = new JSONObject();
                 extraVars.put("host_name", hostName);
 
