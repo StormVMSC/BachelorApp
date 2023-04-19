@@ -82,49 +82,56 @@
         </nav>
     </div>
 </div>
-<main class="pt-5">
-    <div class="container-fluid>
-            <div class="row">
+<main class="pt-5 mt-3">
+    <div class="container fluid">
+        <div class="col-md-12 fw-bold fs-3 text-center">Patching</div>
+        <form class="row g-3">
             <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Konfigurer eksisterende VM</h5>
-                        <div class="card-text text-center">
-                            <select class="select" data-mdb-filter="true">
-                                <option value="1">Ubuntu 22.04 LTS "Web Server"</option>
-                                <option value="2">Amazon Linux "Terraform"</option>
-                                <option value="3">RHEL9 "Ansible"</option>
-                            </select>
-                            <p></p>
-                        </div>
-                        <div class="card-text text-center">
-                            <a href="#" class="btn btn-primary justify-content-center">Konfigurer</a>
-                        </div>
-                    </div>
+                <label for="inputEmail4" class="form-label">Email</label>
+                <input type="email" class="form-control" id="inputEmail4">
+            </div>
+            <div class="col-md-6">
+                <label for="inputPassword4" class="form-label">Password</label>
+                <input type="password" class="form-control" id="inputPassword4">
+            </div>
+            <div class="col-12">
+                <label for="inputAddress" class="form-label">Address</label>
+                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+            </div>
+            <div class="col-12">
+                <label for="inputAddress2" class="form-label">Address 2</label>
+                <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+            </div>
+            <div class="col-md-6">
+                <label for="inputCity" class="form-label">City</label>
+                <input type="text" class="form-control" id="inputCity">
+            </div>
+            <div class="col-md-4">
+                <label for="inputState" class="form-label">State</label>
+                <select id="inputState" class="form-select">
+                    <option selected>Choose...</option>
+                    <option>...</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label for="inputZip" class="form-label">Zip</label>
+                <input type="text" class="form-control" id="inputZip">
+            </div>
+            <div class="col-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="gridCheck">
+                    <label class="form-check-label" for="gridCheck">
+                        Check me out
+                    </label>
                 </div>
             </div>
-        </div>
-</div>
-
-            <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Konfigurer eksisterende Cluster</h5>
-                        <div class="card-text text-center">
-                           <div id="inventory"></div>
-                            <p></p>
-                        </div>
-                        <div class="card-text text-center">
-                            <a href="#" class="btn btn-primary justify-content-center">Konfigurer</a>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Sign in</button>
             </div>
-        </div>
-    </div>
+        </form>
     </div>
 </main>
+
 <script src="config.js"></script>
 </body>
 </html>
