@@ -16,11 +16,22 @@ public class KundeRepository {
     @Autowired
     private JdbcTemplate db;
 
-    public void lagreKunde(Kunde kunde) {
-        String hash = krypterPassord(kunde.getPassord());
-        String sql = "INSERT INTO Kunde (navn,adresse) VALUES(?,?)";
-        db.update(sql, kunde.getUsername(), hash);
+    public boolean lagreKunde(String username, String password) {
+        // sjekker om brukeren eksisterer allerede
 
+        String sql = "SELECT * FROM Kunde WHERE username = ?";
+        Kunde kunde = db.queryForObject(sql, new Object[]{username}, new BeanPropertyRowMapper<>(Kunde.class));
+        if(kunde != null){
+            return false;
+        }
+        String hash = krypterPassord(password);
+        sql = "INSERT INTO Kunde (username,adresse) VALUES(?,?)";
+        int check = db.update(sql, username, hash);
+        if(check == 1){
+            return true;
+        }else{
+         return false;   
+        }
     }
 
     public List<Kunde> hentAlleKunder() {
