@@ -41,16 +41,18 @@ function sendPatch() {
         username: "BrukerA",
         password: "PassordA",
         hosts: ["Host A (1)", "Host A (2)"]
-    }
+    };
 
     $.ajax({
         type: "POST",
         url: "/PatchFlere",
         data: JSON.stringify(patch),
         contentType: "application/json",
-        success: function() {
+        success: function () {
             console.log("Sendt");
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.log("Feil: " + error);
+        }
+    });
 }
