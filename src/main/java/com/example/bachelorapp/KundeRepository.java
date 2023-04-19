@@ -16,7 +16,7 @@ public class KundeRepository {
     @Autowired
     private JdbcTemplate db;
 
-    public boolean lagreKunde(String username, String password) {
+    public boolean registrer(String username, String password) {
         // sjekker om brukeren eksisterer allerede
 
         String sql = "SELECT * FROM Kunde WHERE username = ?";
@@ -30,7 +30,7 @@ public class KundeRepository {
         if(check == 1){
             return true;
         }else{
-         return false;   
+         return false;
         }
     }
 
@@ -81,7 +81,7 @@ public class KundeRepository {
         db.update(sql, kunde.getSessionId(), kunde.getId());
     }
 
-    public boolean isLoggenIn(HttpSession session){
+    public boolean isLoggedIn(HttpSession session){
         return session != null && session.getAttribute("user") != null;
     }
 }
