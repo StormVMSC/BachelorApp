@@ -36,4 +36,9 @@ public class AnsibleAPIController {
         return repo.getHistorikk();
     }
 
+    @PostMapping("/schedulePatch")
+    public void schedulePatch() throws IOException {
+        repo.schedulePatch();
+    }
+
 }
