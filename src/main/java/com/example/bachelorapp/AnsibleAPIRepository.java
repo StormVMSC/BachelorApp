@@ -6,6 +6,8 @@ import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.ArrayList;
+
+import org.apache.http.client.methods.HttpDelete;
 import org.json.JSONArray;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -267,6 +269,52 @@ public class AnsibleAPIRepository {
                 }
 
                 return historikkList;
+        }
+
+        public void schedulePatch() throws IOException {
+
+                String authToken = getAuthToken();
+
+                SSLContext  sslContext = null;
+                try{
+                        sslContext = createSSLContext();
+                }catch(NoSuchAlgorithmException | KeyManagementException e){
+                        e.printStackTrace();
+                }
+
+                CloseableHttpClient httpClient = HttpClients.custom()
+                        .setSSLContext(sslContext)
+                        .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+                        .build();
+
+                HttpPost request = new HttpPost( "https://18.134.222.22/api/v2/schedules/");
+                request.addHeader("content-type", "application/json");
+                request.setHeader("Authorization", "Bearer " + authToken);
+
+
+        }
+
+        public void deleteSchedule() throws IOException {
+
+                int scheduleId = 1;
+
+                String authToken = getAuthToken();
+
+                SSLContext  sslContext = null;
+                try{
+                        sslContext = createSSLContext();
+                }catch(NoSuchAlgorithmException | KeyManagementException e){
+                        e.printStackTrace();
+                }
+
+                CloseableHttpClient httpClient = HttpClients.custom()
+                        .setSSLContext(sslContext)
+                        .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+                        .build();
+
+                HttpDelete request = new HttpDelete( "https://18.134.222.22/api/v2/schedules/" + scheduleId + "/");
+                request.addHeader("content-type", "application/json");
+                request.setHeader("Authorization", "Bearer " + authToken);
         }
 }
 
