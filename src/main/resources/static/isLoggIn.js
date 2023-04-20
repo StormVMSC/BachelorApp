@@ -11,3 +11,13 @@ function check(){
         }
     })
 }
+
+function logout(){
+    $.post("/logout", function(OK){
+        if(OK){
+            window.location.href = "login.html";
+        }else{
+            console.log("noe galt med serveren");
+        }
+    })
+}

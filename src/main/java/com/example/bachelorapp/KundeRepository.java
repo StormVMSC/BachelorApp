@@ -69,13 +69,15 @@ public class KundeRepository {
         return false;
     }
 
-    public void logout(HttpSession session){
-        Kunde kunde = (Kunde) session.getAttribute("user");
+    public boolean logout(HttpSession session){
+        Kunde kunde = (Kunde) session.getAttribute("kunde");
         if(kunde != null){
             kunde.setSessionId(null);
             updateSessionId(kunde);
             session.invalidate();
+            return true;
         }
+        return false;
     }
 
     private void updateSessionId(Kunde kunde) {

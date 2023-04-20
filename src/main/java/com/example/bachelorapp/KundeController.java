@@ -23,8 +23,8 @@ public class KundeController {
     }
 
     @PostMapping("/logout")
-    public void logout(HttpSession session){
-        rep.logout(session);
+    public boolean logout(HttpSession session){
+        return rep.logout(session);
     }
 
     @GetMapping("/isLoggedIn")
