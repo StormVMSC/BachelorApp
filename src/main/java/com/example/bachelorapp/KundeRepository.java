@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public class KundeRepository {
+public class KundeRepository{
 
     @Autowired
     private AnsibleAPIRepository Ansible;
@@ -24,7 +24,7 @@ public class KundeRepository {
     public boolean registrer(String username, String password) {
         // sjekker om brukeren eksisterer allerede
 
-        String sql = "SELECT * FROM kunde WHERE username = ?";
+        String sql = "SELECT * FROM Kunde WHERE username = ?";
         Kunde kunde = null;
         try{
             kunde = db.queryForObject(sql, new Object[]{"'" + username + "'"} , new BeanPropertyRowMapper<>(Kunde.class));
@@ -46,7 +46,7 @@ public class KundeRepository {
         return alleKunder;
     }
     public void slettAlleKunder () {
-        String sql = "DELETE from KUNDE";
+        String sql = "DELETE from Kunde";
         db.update(sql);
     }
 
@@ -60,7 +60,7 @@ public class KundeRepository {
     }
 
     public boolean login(String username, String passord, HttpSession session ) throws IOException {
-        String sql = "SELECT * FROM kunde WHERE username = ?";
+        String sql = "SELECT * FROM Kunde WHERE username = ?";
         Kunde kunde = db.queryForObject(sql, new Object[]{username}, new BeanPropertyRowMapper<>(Kunde.class));
         if(kunde != null && sjekkPassord(passord, kunde.getPassord())){
             String auth = Ansible.getAuthToken(username, passord);
@@ -86,7 +86,7 @@ public class KundeRepository {
     }
 
     private void updateSessionId(Kunde kunde) {
-        String sql =  "UPDATE kunde SET session_id = ? WHERE id = ?";
+        String sql =  "UPDATE Kunde SET session_id = ? WHERE id = ?";
         db.update(sql, kunde.getSessionId(), kunde.getId());
     }
 
