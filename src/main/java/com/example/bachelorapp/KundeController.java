@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 
 @RestController
 public class KundeController {
@@ -18,7 +20,7 @@ public class KundeController {
     }
 
     @PostMapping("/login")
-    public boolean login(String username, String password , HttpSession session){
+    public boolean login(String username, String password , HttpSession session) throws IOException {
         return rep.login(username, password, session);
     }
 

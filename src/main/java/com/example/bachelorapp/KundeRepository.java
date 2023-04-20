@@ -9,12 +9,15 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
 @Repository
 public class KundeRepository {
 
+    @Autowired
+    private AnsibleAPIRepository Ansible;
     @Autowired
     private JdbcTemplate db;
 
@@ -56,10 +59,12 @@ public class KundeRepository {
         return ok;
     }
 
-    public boolean login(String username, String passord, HttpSession session ){
+    public boolean login(String username, String passord, HttpSession session ) throws IOException {
         String sql = "SELECT * FROM kunde WHERE username = ?";
         Kunde kunde = db.queryForObject(sql, new Object[]{username}, new BeanPropertyRowMapper<>(Kunde.class));
         if(kunde != null && sjekkPassord(passord, kunde.getPassord())){
+            String auth = Ansible.getAuthToken(username, passord);
+            session.setAttribute("auth", auth);
             String sessionId = UUID.randomUUID().toString();
             kunde.setSessionId(sessionId);
             updateSessionId(kunde);

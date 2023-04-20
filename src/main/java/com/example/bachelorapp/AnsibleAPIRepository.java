@@ -7,6 +7,7 @@ import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.ArrayList;
 
+import jakarta.servlet.http.HttpSession;
 import org.apache.http.client.methods.HttpDelete;
 import org.json.JSONArray;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -30,16 +31,15 @@ import java.io.IOException;
 @Repository
 public class AnsibleAPIRepository {
         private static final String url = "18.134.222.22";
-        private static final String username = "admin";
-        private static final String password = "redhat";
 
         // this method returns a list of Host objects by making an API call to Ansible
-        public List<Host> getHostList() throws Exception {
+        public List<Host> getHostList(HttpSession session) throws Exception {
                 // Create an empty ArrayList to store the host
                 List<Host> hostList = new ArrayList<>();
 
+                String authToken = (String) session.getAttribute("auth");
                 // Get the Authorization token needed to authenticate the API
-                String authtoken = getAuthToken();
+
 
                 // Create an SSL context to disable SSL
                 SSLContext sslContext = null;
@@ -60,7 +60,7 @@ public class AnsibleAPIRepository {
 
                 // Set headers for the request, including the authorization token
                 httpGet.setHeader("Content-type", "application/json");
-                httpGet.setHeader("Authorization", "Bearer " + authtoken);
+                httpGet.setHeader("Authorization", "Bearer " + authToken);
 
                 // Execute the request and get the response
                 CloseableHttpResponse response = httpClient.execute(httpGet);
@@ -84,10 +84,10 @@ public class AnsibleAPIRepository {
                 return hostList;
         }
 
-        public List<Inventory> getInventory() throws IOException {
+        public List<Inventory> getInventory(HttpSession session) throws IOException {
                 List<Inventory> inventoryList = new ArrayList<>();
 
-                String authToken = getAuthToken();
+                String authToken = (String) session.getAttribute("auth");
 
                 SSLContext  sslContext = null;
                 try{
@@ -132,7 +132,7 @@ public class AnsibleAPIRepository {
         }
 
         //this methods gets token for performing api tasks
-        public String getAuthToken() throws IOException {
+        public String getAuthToken(String username, String password) throws IOException {
 
                 // Create a String variable for authentication token
                 String authToken = null;
@@ -192,9 +192,10 @@ public class AnsibleAPIRepository {
         }
 
 
-        public void patchSomeCall(Patch patchData) throws IOException {
+        public void patchSomeCall(Patch patchData, HttpSession session) throws IOException {
 
-                String authToken = getAuthToken();
+                String authToken = (String) session.getAttribute("auth");
+
 
                 SSLContext  sslContext = null;
                 try{
@@ -232,9 +233,9 @@ public class AnsibleAPIRepository {
         }
 
 
-        public List<Historikk> getHistorikk() throws IOException {
+        public List<Historikk> getHistorikk(HttpSession session) throws IOException {
                 List<Historikk> historikkList = new ArrayList<>();
-                String authToken = getAuthToken();
+                String authToken = (String) session.getAttribute("auth");
 
                 SSLContext  sslContext = null;
                 try{
@@ -271,9 +272,8 @@ public class AnsibleAPIRepository {
                 return historikkList;
         }
 
-        public void schedulePatch() throws IOException {
-
-                String authToken = getAuthToken();
+        public void schedulePatch(HttpSession session) throws IOException {
+                String authToken = (String) session.getAttribute("auth");
 
                 SSLContext  sslContext = null;
                 try{
@@ -294,11 +294,12 @@ public class AnsibleAPIRepository {
 
         }
 
-        public void deleteSchedule() throws IOException {
+        public void deleteSchedule(HttpSession session) throws IOException {
+
+                String authToken = (String) session.getAttribute("auth");
 
                 int scheduleId = 1;
 
-                String authToken = getAuthToken();
 
                 SSLContext  sslContext = null;
                 try{
