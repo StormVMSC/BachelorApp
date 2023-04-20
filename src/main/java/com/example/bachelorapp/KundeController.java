@@ -1,27 +1,41 @@
 package com.example.bachelorapp;
 
-import org.springframework.stereotype.Controller;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 
-@Controller
+
+@RestController
 public class KundeController {
-    public final List<Kunde> alleKunder = new ArrayList<>();
+    @Autowired
+    KundeRepository rep;
 
-    @PostMapping("/lagre")
-    public void lagreKunde(Kunde innKunde){
-        alleKunder.add(innKunde);
-    }
-    @GetMapping("/hentAlle")
-    public List<Kunde> hentAlle(){
-        return alleKunder;
+    @PostMapping("/registrer")
+    public boolean registrer(String username, String password){
+        return rep.registrer(username, password);
     }
 
-    @GetMapping("/slettAlle")
-    public void slettAlle(){
-        alleKunder.clear();
+    @PostMapping("/login")
+    public boolean login(String username, String password , HttpSession session) throws IOException {
+        return rep.login(username, password, session);
     }
+
+    @PostMapping("/logout")
+    public boolean logout(HttpSession session){
+        return rep.logout(session);
+    }
+
+    @GetMapping("/isLoggedIn")
+    public boolean isLoggedIn(HttpSession session){
+        return rep.isLoggedIn(session);
+    }
+
+
+
+
+
 }
