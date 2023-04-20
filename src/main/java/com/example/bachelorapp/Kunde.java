@@ -12,7 +12,6 @@ public class Kunde {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String username;
-
     private String passord;
     private String sessionId;
 
