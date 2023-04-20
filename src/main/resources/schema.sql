@@ -2,7 +2,7 @@ CREATE TABLE kunde
 (
     id INTEGER AUTO_INCREMENT NOT NULL,
     username VARCHAR(255) NOT NULL,
-    passord VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
     sessionId VARCHAR(255) NOT NULL,
     PRIMARY KEY (id)
 );

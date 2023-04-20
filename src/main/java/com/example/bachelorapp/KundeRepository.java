@@ -3,6 +3,7 @@ package com.example.bachelorapp;
 import jakarta.servlet.http.HttpSession;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -19,18 +20,19 @@ public class KundeRepository {
     public boolean registrer(String username, String password) {
         // sjekker om brukeren eksisterer allerede
 
-        String sql = "SELECT * FROM Kunde WHERE username = ?";
-        Kunde kunde = db.queryForObject(sql, new Object[]{username}, new BeanPropertyRowMapper<>(Kunde.class));
-        if(kunde != null){
-            return false;
+        String sql = "SELECT * FROM kunde WHERE username = ?";
+        Kunde kunde = null;
+        try{
+            kunde = db.queryForObject(sql, new Object[]{"'" + username + "'"} , new BeanPropertyRowMapper<>(Kunde.class));
+        }catch(EmptyResultDataAccessException e){
         }
-        String hash = krypterPassord(password);
-        sql = "INSERT INTO Kunde (username,adresse) VALUES(?,?)";
-        int check = db.update(sql, username, hash);
-        if(check == 1){
-            return true;
-        }else{
-         return false;
+        if(kunde == null){
+            String hash = krypterPassord(password);
+            sql = "INSERT INTO kunde (username, password) VALUES(?,?)";
+            int check = db.update(sql, username, hash);
+            return check == 1;
+        } else {
+            return false;
         }
     }
 
@@ -54,7 +56,7 @@ public class KundeRepository {
     }
 
     public boolean login(String username, String passord, HttpSession session ){
-        String sql = "SELECT * FROM bruker WHERE username = ?";
+        String sql = "SELECT * FROM kunde WHERE username = ?";
         Kunde kunde = db.queryForObject(sql, new Object[]{username}, new BeanPropertyRowMapper<>(Kunde.class));
 
         if(kunde != null && sjekkPassord(passord, kunde.getPassord())){
@@ -77,7 +79,7 @@ public class KundeRepository {
     }
 
     private void updateSessionId(Kunde kunde) {
-        String sql =  "UPDATE users SET session_id = ? WHERE id = ?";
+        String sql =  "UPDATE kunde SET session_id = ? WHERE id = ?";
         db.update(sql, kunde.getSessionId(), kunde.getId());
     }
 
