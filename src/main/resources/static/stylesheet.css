@@ -111,7 +111,7 @@ body{
 .checkbox:checked ~ .single_card .card_body {color: black;}
 
 .continueBtn{
-    max-width: 315px;
+    max-width: 370px;
     background-color: #32abd2;
     color: white;
     font-size: 18px;
