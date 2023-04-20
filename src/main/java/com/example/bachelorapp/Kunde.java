@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 public class Kunde {
@@ -15,11 +16,21 @@ public class Kunde {
     private String passord;
     private String sessionId;
 
-    public Kunde(int id, String navn, String passord, String sessionId) {
-        this.id = id;
+    public Kunde(String navn, String passord) {
         this.username = navn;
         this.passord = passord;
+
+    }
+
+    public Kunde(int id, String username, String passord, String sessionId) {
+        this.id = id;
+        this.username = username;
+        this.passord = passord;
         this.sessionId = sessionId;
+    }
+
+    public Kunde() {
+
     }
 
     public int getId() {

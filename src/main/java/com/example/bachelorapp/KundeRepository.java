@@ -1,5 +1,6 @@
 package com.example.bachelorapp;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpSession;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class KundeRepository {
         }
         if(kunde == null){
             String hash = krypterPassord(password);
-            sql = "INSERT INTO kunde (username, password) VALUES(?,?)";
+            sql = "INSERT INTO kunde (username, passord) VALUES(?,?)";
             int check = db.update(sql, username, hash);
             return check == 1;
         } else {
@@ -58,7 +59,6 @@ public class KundeRepository {
     public boolean login(String username, String passord, HttpSession session ){
         String sql = "SELECT * FROM kunde WHERE username = ?";
         Kunde kunde = db.queryForObject(sql, new Object[]{username}, new BeanPropertyRowMapper<>(Kunde.class));
-
         if(kunde != null && sjekkPassord(passord, kunde.getPassord())){
             String sessionId = UUID.randomUUID().toString();
             kunde.setSessionId(sessionId);
@@ -84,6 +84,12 @@ public class KundeRepository {
     }
 
     public boolean isLoggedIn(HttpSession session){
-        return session != null && session.getAttribute("user") != null;
+        return session != null && session.getAttribute("kunde") != null;
+    }
+
+    @PostConstruct
+    private void brukerInsert(){
+        registrer("admin", "redhat");
     }
 }
+

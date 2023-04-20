@@ -1,25 +1,20 @@
 function logInn() {
 
 
-    const brukernavnOK = validerBrukernavn($("#brukernavn").val());
-    const passordOK = validerPassord($("#passord").val);
-    if (brukernavnOK && passordOK) {
-        const bruker = {
-            brukernavn: $("#brukernavn").val(),
-            passord: $("#passord").val()
-        }
 
-        $.post("/login", bruker, function (OK) {
-            if (OK) {
-                window.location.href = 'index.html';
-            } else {
-                $("#feil").html("Feil brukernavn eller passord");
-            }
-        })
-            .fail(function () {
-                $("#feil").html("Feil på server, prøv igjen senere");
-            });
-    }
+
+      var brukernavn = $("#brukernavn").val();
+      var passord = $("#passord").val();
+
+     $.post("/login",{username: brukernavn, password: passord}, function (OK) {
+         if (OK) {
+             window.location.href = 'index.html';
+         } else {
+             $("#feil").html("Feil brukernavn eller passord");
+         }
+     }).fail(function () {
+             $("#feil").html("Feil på server, prøv igjen senere");
+     });
 }
 
 function registrer(){
