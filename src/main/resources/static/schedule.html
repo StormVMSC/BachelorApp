@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
   <link rel="stylesheet" href="stylesheet.css">
 </head>
-<body>
+<body onload="loadSchedule()">
 <!---top-nav--->
 <nav class="navbar navbar-expand-lg fixed-top" style="background-color: #a8a8a7">
   <div class="container-fluid">
@@ -184,6 +184,19 @@
           <button type="button" class="btn btn-success" onclick="sendSchedule()">Schedule</button>
         </div>
         <div class="col-md-3"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title text-center">Nylig historikk</h5>
+              <div class="card-text">
+                <div id="schedules"></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </form>
   </div>

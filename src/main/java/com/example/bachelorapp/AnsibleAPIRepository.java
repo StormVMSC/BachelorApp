@@ -63,6 +63,7 @@ public class AnsibleAPIRepository {
                 httpGet.setHeader("Content-type", "application/json");
                 httpGet.setHeader("Authorization", "Bearer " + authToken);
 
+
                 // Execute the request and get the response
                 CloseableHttpResponse response = httpClient.execute(httpGet);
 
@@ -295,7 +296,7 @@ public class AnsibleAPIRepository {
                 request.addHeader("content-type", "application/json");
                 request.setHeader("Authorization","Basic " + Base64.getEncoder().encodeToString((username + ":" + passord).getBytes()));
 
-                String rrule = "DTSTART;TZID=Europe/Oslo:" + scheduleData.getDato() + "T" + scheduleData.getTid() + " RRULE:FREQ=" + scheduleData.getFrekvens() + ";INTERVAL=" + scheduleData.getIntervall();
+                //String rrule = "DTSTART;TZID=Europe/Oslo:" + scheduleData.getDato() + "T" + scheduleData.getTid() + " RRULE:FREQ=" + scheduleData.getFrekvens() + ";INTERVAL=" + scheduleData.getIntervall();
                 String hostName = String.join(",", scheduleData.getHosts());
 
                 JSONObject extraVars = new JSONObject();
@@ -306,7 +307,7 @@ public class AnsibleAPIRepository {
                 jsonBody.put("unified_job_template", scheduleData.getPlaybookId());
                 jsonBody.put("enabled", true);
                 jsonBody.put("name", scheduleData.getNavn());
-                jsonBody.put("rrule", rrule);
+                jsonBody.put("rrule", scheduleData.getRrule());
 
 
 
@@ -325,12 +326,12 @@ public class AnsibleAPIRepository {
 
         }
 
-        public void deleteSchedule(HttpSession session) throws IOException {
+        public void deleteSchedule(int id, HttpSession session) throws IOException {
 
                 String authToken = (String) session.getAttribute("auth");
 
-                int scheduleId = 1;
-
+                String username = "admin";
+                String passord = "redhat";
 
                 SSLContext  sslContext = null;
                 try{
@@ -344,9 +345,65 @@ public class AnsibleAPIRepository {
                         .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
                         .build();
 
-                HttpDelete request = new HttpDelete( "https://18.134.222.22/api/v2/schedules/" + scheduleId + "/");
+                HttpDelete request = new HttpDelete( "https://18.134.222.22/api/v2/schedules/" + id + "/");
                 request.addHeader("content-type", "application/json");
-                request.setHeader("Authorization", "Bearer " + authToken);
+                request.setHeader("Authorization","Basic " + Base64.getEncoder().encodeToString((username + ":" + passord).getBytes()));
+
+                CloseableHttpResponse response = httpClient.execute(request);
+
+        }
+
+        public List<Schedule> getSchedule(HttpSession session) throws IOException {
+                List<Schedule> scheduleList = new ArrayList<>();
+
+                String authToken = (String) session.getAttribute("auth");
+
+                String username = "admin";
+                String passord = "redhat";
+
+                SSLContext  sslContext = null;
+                try{
+                        sslContext = createSSLContext();
+                }catch(NoSuchAlgorithmException | KeyManagementException e){
+                        e.printStackTrace();
+                }
+
+                CloseableHttpClient httpClient = HttpClients.custom()
+                        .setSSLContext(sslContext)
+                        .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+                        .build();
+
+                HttpGet httpGet = new HttpGet("https://" + url + "/api/v2/schedules/");
+                httpGet.setHeader("Content-type", "application/json");
+                httpGet.setHeader("Authorization","Basic " + Base64.getEncoder().encodeToString((username + ":" + passord).getBytes()));
+
+                CloseableHttpResponse response = httpClient.execute(httpGet);
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode jsonNode = mapper.readTree(response.getEntity().getContent());
+                JsonNode resultsNode = jsonNode.get("results");
+
+                System.out.println(resultsNode);
+
+                for (JsonNode scheduleNode : resultsNode) {
+                        int id = scheduleNode.get("id").asInt();
+                        String navn = scheduleNode.get("name").asText();
+                        String rrule = scheduleNode.get("rrule").asText();
+                        String playbookId = scheduleNode.get("unified_job_template").asText();
+
+                        JsonNode extraDataNode = scheduleNode.get("extra_data");
+                        List<String> hosts = new ArrayList<>();
+                        if (extraDataNode != null) {
+                                hosts.add(extraDataNode.has("host_name") ? extraDataNode.get("host_name").asText() : "N/A");
+                        }
+                        else {
+                                hosts.add("hmm");
+                        }
+
+                        Schedule schedule = new Schedule(id, navn, rrule, playbookId, hosts);
+                        scheduleList.add(schedule);
+                }
+                System.out.println(scheduleList);
+                return scheduleList;
         }
 }
 

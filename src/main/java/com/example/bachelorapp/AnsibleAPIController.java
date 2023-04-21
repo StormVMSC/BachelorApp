@@ -39,4 +39,14 @@ public class AnsibleAPIController {
         repo.schedulePatch(schedule, session);
     }
 
+    @PostMapping("/deleteSchedule")
+    public void deleteSchedule(Integer id, HttpSession session) throws IOException {
+        repo.deleteSchedule(id, session);
+    }
+
+    @GetMapping("/GetSchedules")
+    public List<Schedule> getSchedules(HttpSession session) throws IOException {
+        return repo.getSchedule(session);
+    }
+
 }
