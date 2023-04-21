@@ -8,9 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @RestController
@@ -38,7 +35,9 @@ public class AnsibleAPIController {
     }
 
     @PostMapping("/schedulePatch")
-    public void schedulePatch(HttpSession session) throws IOException {
+    public void schedulePatch(@RequestBody Schedule schedule , HttpSession session) throws IOException {
+        
+
         repo.schedulePatch(session);
     }
 
