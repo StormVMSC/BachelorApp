@@ -36,9 +36,7 @@ public class AnsibleAPIController {
 
     @PostMapping("/schedulePatch")
     public void schedulePatch(@RequestBody Schedule schedule , HttpSession session) throws IOException {
-        
-
-        repo.schedulePatch(session);
+        repo.schedulePatch(schedule, session);
     }
 
 }

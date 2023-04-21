@@ -4,6 +4,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
+import java.util.Base64;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -272,8 +273,11 @@ public class AnsibleAPIRepository {
                 return historikkList;
         }
 
-        public void schedulePatch(HttpSession session) throws IOException {
+        public void schedulePatch(Schedule scheduleData, HttpSession session) throws IOException {
                 String authToken = (String) session.getAttribute("auth");
+
+                String username = "BrukerA";
+                String passord = "PassordA";
 
                 SSLContext  sslContext = null;
                 try{
@@ -289,8 +293,35 @@ public class AnsibleAPIRepository {
 
                 HttpPost request = new HttpPost( "https://18.134.222.22/api/v2/schedules/");
                 request.addHeader("content-type", "application/json");
-                request.setHeader("Authorization", "Bearer " + authToken);
+                request.setHeader("Authorization","Basic " + Base64.getEncoder().encodeToString((username + ":" + passord).getBytes()));
 
+                String rrule = "DTSTART;TZID=Europe/Oslo:" + scheduleData.getDato() + "T" + scheduleData.getTid() + " RRULE:FREQ=" + scheduleData.getFrekvens() + ";INTERVAL=" + scheduleData.getIntervall();
+                String hostName = String.join(",", scheduleData.getHosts());
+
+                JSONObject extraVars = new JSONObject();
+                extraVars.put("host_name", hostName);
+
+                JSONObject jsonBody = new JSONObject();
+                jsonBody.put("extra_data", extraVars);
+                jsonBody.put("unified_job_template", scheduleData.getPlaybookId());
+                jsonBody.put("enabled", true);
+                jsonBody.put("name", scheduleData.getNavn());
+                jsonBody.put("rrule", rrule);
+
+
+
+
+
+                StringEntity entity = new StringEntity(jsonBody.toString());
+                request.setEntity(entity);
+
+
+                CloseableHttpResponse response = httpClient.execute(request);
+                String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+
+                if (responseString != null) {
+                        System.out.println(responseString);
+                }
 
         }
 

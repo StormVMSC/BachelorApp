@@ -1,5 +1,6 @@
 package com.example.bachelorapp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Schedule {
@@ -34,14 +35,13 @@ public class Schedule {
     public String getNavn() {return navn;}
     public void setNavn(String navn) {this.navn = navn;}
 
-    public List<String> getHosts() {return hosts;}
-    public void setHosts(List<String> hosts) {this.hosts = hosts;}
+    public List<String> getHosts() { return hosts; }
+    public void setHosts(List<String> hosts) { this.hosts = hosts; }
 
     public String getDato() {return dato;}
     public void setDato(String dato) {this.dato = dato;}
 
     public String getTid() {return tid;}
     public void setTid(String tid) {this.tid = tid;}
-
 
 }

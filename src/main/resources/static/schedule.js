@@ -15,7 +15,7 @@ function sendSchedule() {
         frekvens: document.getElementById("inpFrekven").value,
         intervall: document.getElementById("inpIntervall").value,
         navn: document.getElementById("inpNavn").value,
-        host: getCheckboxValues(),
+        hosts: getCheckboxValues(),
         dato: document.getElementById("inpDato").value,
         tid: document.getElementById("inpTid").value
     };
