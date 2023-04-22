@@ -40,7 +40,7 @@ public class AnsibleAPIController {
     }
 
     @PostMapping("/deleteSchedule")
-    public void deleteSchedule(Integer id, HttpSession session) throws IOException {
+    public void deleteSchedule(@RequestBody int id, HttpSession session) throws IOException {
         repo.deleteSchedule(id, session);
     }
 

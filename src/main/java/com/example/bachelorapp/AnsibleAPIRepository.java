@@ -350,7 +350,11 @@ public class AnsibleAPIRepository {
                 request.setHeader("Authorization","Basic " + Base64.getEncoder().encodeToString((username + ":" + passord).getBytes()));
 
                 CloseableHttpResponse response = httpClient.execute(request);
+                String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
 
+                if (responseString != null) {
+                        System.out.println(responseString);
+                }
         }
 
         public List<Schedule> getSchedule(HttpSession session) throws IOException {
@@ -382,7 +386,6 @@ public class AnsibleAPIRepository {
                 JsonNode jsonNode = mapper.readTree(response.getEntity().getContent());
                 JsonNode resultsNode = jsonNode.get("results");
 
-                System.out.println(resultsNode);
 
                 for (JsonNode scheduleNode : resultsNode) {
                         int id = scheduleNode.get("id").asInt();
@@ -402,7 +405,6 @@ public class AnsibleAPIRepository {
                         Schedule schedule = new Schedule(id, navn, rrule, playbookId, hosts);
                         scheduleList.add(schedule);
                 }
-                System.out.println(scheduleList);
                 return scheduleList;
         }
 }
