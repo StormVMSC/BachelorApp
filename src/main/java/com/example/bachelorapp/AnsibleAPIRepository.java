@@ -61,8 +61,10 @@ public class AnsibleAPIRepository {
 
                 // Set headers for the request, including the authorization token
                 httpGet.setHeader("Content-type", "application/json");
-                httpGet.setHeader("Authorization", "Bearer " + authToken);
-
+                //httpGet.setHeader("Authorization", "Bearer " + authToken);
+                String username = "BrukerA";
+                String passord = "PassordA";
+                httpGet.setHeader("Authorization","Basic " + Base64.getEncoder().encodeToString((username + ":" + passord).getBytes()));
 
                 // Execute the request and get the response
                 CloseableHttpResponse response = httpClient.execute(httpGet);
@@ -406,6 +408,49 @@ public class AnsibleAPIRepository {
                         scheduleList.add(schedule);
                 }
                 return scheduleList;
+        }
+
+
+
+
+        public List<Playbook> getPlaybook(HttpSession session) throws IOException {
+                List<Playbook> playbookList = new ArrayList<>();
+
+                String authToken = (String) session.getAttribute("auth");
+
+                String username = "BrukerA";
+                String passord = "PassordA";
+
+                SSLContext  sslContext = null;
+                try{
+                        sslContext = createSSLContext();
+                }catch(NoSuchAlgorithmException | KeyManagementException e){
+                        e.printStackTrace();
+                }
+
+                CloseableHttpClient httpClient = HttpClients.custom()
+                        .setSSLContext(sslContext)
+                        .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+                        .build();
+
+                HttpGet httpGet = new HttpGet("https://" + url + "/api/v2/job_templates/");
+                httpGet.setHeader("Content-type", "application/json");
+                httpGet.setHeader("Authorization","Basic " + Base64.getEncoder().encodeToString((username + ":" + passord).getBytes()));
+
+                CloseableHttpResponse response = httpClient.execute(httpGet);
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode jsonNode = mapper.readTree(response.getEntity().getContent());
+                JsonNode resultsNode = jsonNode.get("results");
+
+
+                for (JsonNode playbookNode : resultsNode) {
+                        int id = playbookNode.get("id").asInt();
+                        String navn = playbookNode.get("name").asText();
+
+                        Playbook playbook = new Playbook(id, navn);
+                        playbookList.add(playbook);
+                }
+                return playbookList;
         }
 }
 

@@ -49,4 +49,9 @@ public class AnsibleAPIController {
         return repo.getSchedule(session);
     }
 
+    @GetMapping("/GetPlaybooks")
+    public List<Playbook> getPlaybooks(HttpSession session) throws IOException {
+        return repo.getPlaybook(session);
+    }
+
 }

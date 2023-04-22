@@ -1,6 +1,43 @@
 function loadSchedule() {
     getScheduleList();
+    getPlaybookList();
+    getHostList();
 }
+
+function getHostList(){
+    $.ajax({
+        url: "/GetHostList",
+        method: "GET",
+        success: function(data) {
+            // Handle successful response
+            console.log(data); // This will print the response to the console
+            data.sort((a, b) => a.id - b.id);
+            formatHostList(data);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            // Handle error response
+            console.error(errorThrown); // This will print the error to the console
+        }
+    });
+}
+
+function getPlaybookList() {
+    $.ajax({
+        url: "/GetPlaybooks",
+        method: "GET",
+        success: function(data) {
+            // Handle successful response
+            console.log(data); // This will print the response to the console
+            data.sort((a, b) => a.id - b.id);
+            formatPlaybookList(data);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            // Handle error response
+            console.error(errorThrown); // This will print the error to the console
+        }
+    });
+}
+
 
 function getScheduleList() {
     $.ajax({
@@ -18,6 +55,32 @@ function getScheduleList() {
         }
     });
 }
+
+function formatPlaybookList(data){
+    let ut = "<label for=\"inpPlaybook\">Ønsket Playbook</label>" +
+        "<select id=\"inpPlaybook\" class=\"form-control text-center\">" +
+        "<option selected>Velg playbook</option>";
+
+    for(let playbook of data){
+        ut += "<option value='"+ playbook.id +"'> " + playbook.navn + "</option>";
+    }
+    ut += "</select>";
+    $("#playbook").html(ut);
+}
+
+function formatHostList(data){
+    let ut = "";
+    let i = 0;
+    for(let host of data){
+        i++;
+        ut += "<div class=\"form-check form-check-inline\">" +
+            "<input class='form-check-input' type='checkbox' id='" + "inlineCheckbox" + i + "' value='"+ host.name +"'>" +
+            "<label class='form-check-label' for='"+ "inlineCheckbox" + i +"'>"+ host.name +"</label>" +
+            "</div>";
+    }
+    $("#host").html(ut);
+}
+
 
 function formatScheduleList(data){
     let ut = "<table class='table table-striped'>" +
@@ -93,7 +156,7 @@ function sendSchedule() {
     let tid = document.getElementById("inpTid").value;
 
     let schedule = {
-        playbookId: "22",
+        playbookId: document.getElementById("inpPlaybook").value,
         navn: document.getElementById("inpNavn").value,
         hosts: getCheckboxValues(),
         rrule: "DTSTART;TZID=Europe/Oslo:" + dato + "T" + tid + " RRULE:FREQ=" + frekvens + ";INTERVAL=" + intervall
