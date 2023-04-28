@@ -14,12 +14,15 @@
     <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
-<section class="vh-100" id="login">
+<section class="vh-100 gradient-form" id="login">
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6 text-black">
-                <div class="px-5 ms-xl-4 mt-5">
-                    <span class="fw-bold fs-5">Velkommen til Sopra Steria sin automasjonsplattform</span>
+                <div class="px-5 ms-xl-4">
+                    <div class="pt-3 mt-xl-4">
+                        <img src="img/SopraSteriaCropped.png" width="250px;">
+                    </div>
+                    <span class="fw-bold fs-5">Velkommen til automasjonsplattformen.</span>
                     <p class="text-muted">Vennligst logg inn.</p></div>
                 <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
                     <form style="width: 23rem;">
@@ -32,15 +35,20 @@
                             <input id="passord" type="password" class="form-control form-control-lg" />
                         </div>
                         <div class="d-grid gap-2 pt-1 mb-4">
-                            <button onclick="logInn()" class="btn-primary btn-lg btn-block" type="button">Logg inn</button>
+                            <button onclick="logInn()" class="bnt btn-primary btn-lg btn-block gradient-login" type="button">Logg inn</button>
                         </div>
                         <p class="small mb-5 pb-lg-2" id="glemtpw"><a class="text-muted" href="#!">Glemt passord?</a></p>
                     </form>
                 </div>
             </div>
-            <div class="col-sm-6 px-0 d-none d-sm-block">
-                <img src="img/sopra-bygg.jpg"
-                     alt="Login image" class="w-100 vh-100" style="object-fit: cover; object-position: right;">
+            <div class="col-lg-6 d-flex align-items-center gradient-login">
+                <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                    <h4 class="mb-4">The world is how we shape it.</h4>
+                    <p class="small mb-0">Sopra Steria hjelper store private selskaper
+                        og offentlige virksomheter med å ta digitalt lederskap,
+                        og er opptatt av å skape verdi for kundene og samfunnet.
+                        Vi vil bidra til en bedre og mer bærekraftig fremtid.</p>
+                </div>
             </div>
         </div>
     </div>
