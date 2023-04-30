@@ -1,6 +1,5 @@
 body{
     font-family: Tahoma;
-    min-height: 100vh;
 }
 
 .gradient-login {
@@ -23,12 +22,16 @@ body{
 }
 
 :root{
-    --offcanvas-width: 250px;
+    --offcanvas-width: 270px;
     --topNavBarHeight: 56px;
 }
 
 .sidebar-menu{
     width: var(--offcanvas-width);
+}
+
+.offcanvas {
+    border: none !important;
 }
 
 @media (min-width: 992px) {
@@ -48,8 +51,21 @@ body{
     }
 }
 
-#ic-burger{
-    color: purple;
+.menu-gradient-active {
+    background: transparent linear-gradient(to left, #FFFFFF 70%, #95C11F 100%);
+}
+
+.menu-gradient-inactive {
+    background: transparent linear-gradient(to left, #ffffff 70%, #e2e2e2 100%);
+}
+
+.pil {
+
+}
+
+.costumbtn {
+    background-color: #00a188 !important;
+    border: none;
 }
 
 *,

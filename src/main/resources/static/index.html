@@ -16,10 +16,10 @@
 <body onload="loadData()">
 
 <!---top-nav--->
-<nav class="navbar navbar-expand-lg fixed-top" style="background-color: #a8a8a7">
+<nav class="navbar navbar-expand-lg fixed-top">
     <div class="container-fluid">
         <!---logo--->
-        <a class="navbar-brand me-2 px-1 link-dark" href="#">Sopra Steria</a>
+        <a class="navbar-brand me-2 px-1 link-dark" href="https://www.soprasteria.no/"><img src="img/SopraSteriaCropped.png" width="120px;"></a>
 
         <!---trigger sidebar --->
         <button class="navbar-toggler me-auto btn btn-outline-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,23 +60,26 @@
 
 <!---offcanvas-sidebar--->
 <div class="offcanvas offcanvas-start sidebar-menu" tabindex="-1" id="offcanvas" aria-labelledby="offcanvas">
-    <div class="offcanvas-body p-0" style="background-color: #a8a8a7">
+    <div class="offcanvas-body p-0">
         <nav class="navbar">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a href="index.html" class="nav-link link-dark px-3"><span class="me-3"><i class="bi bi-speedometer"></i></span><span>Dashboard</span> </a>
+                    <a href="index.html" class="nav-link link-dark px-3 menu-gradient-active"><span class="me-3"><i class="bi bi-speedometer"></i></span><span>Dashboard</span><i class="bi bi-chevron-compact-right pil"></i></a>
                 </li>
                 <li class="nav-item">
-                    <a href="status.html" class="nav-link link-dark px-3 active"><span class="me-3"><i class="bi bi-graph-up"></i></span><span>Status</span> </a>
+                    <a href="status.html" class="nav-link link-dark px-3 menu-gradient-inactive"><span class="me-3"><i class="bi bi-graph-up"></i></span><span>Status</span><i class="bi bi-chevron-compact-right pil"></i></a>
                 </li>
                 <li class="nav-item">
-                    <a href="config.html" class="nav-link link-dark px-3"><span class="me-3"><i class="bi bi-tools"></i></span><span>Konfigurasjoner</span> </a>
+                    <a href="config.html" class="nav-link link-dark px-3 menu-gradient-inactive"><span class="me-3"><i class="bi bi-tools"></i></span><span>Konfigurasjoner</span><i class="bi bi-chevron-compact-right pil"></i></a>
                 </li>
                 <li class="nav-item">
-                    <a href="update.html" class="nav-link link-dark px-3"><span class="me-3"><i class="bi bi-arrow-repeat"></i></span><span>Oppdateringer</span> </a>
+                    <a href="update.html" class="nav-link link-dark px-3 menu-gradient-inactive"><span class="me-3"><i class="bi bi-arrow-repeat"></i></span><span>Oppdateringer</span><i class="bi bi-chevron-compact-right pil"></i></a>
                 </li>
                 <li class="nav-item">
-                    <a href="deployment.html" class="nav-link link-dark px-3"><span class="me-3"><i class="bi bi-rocket"></i></span><span>Deployment</span> </a>
+                    <a href="deployment.html" class="nav-link link-dark px-3 menu-gradient-inactive"><span class="me-3"><i class="bi bi-rocket"></i></span><span>Deployment</span><i class="bi bi-chevron-compact-right pil"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a href="schedule.html" class="nav-link link-dark px-3 menu-gradient-inactive"><span class="me-3"><i class="bi bi-alarm"></i></span><span>Scheduling</span><i class="bi bi-chevron-compact-right pil"></i></a>
                 </li>
             </ul>
         </nav>
@@ -87,16 +90,16 @@
     <main class="mt-5 pt-3">
         <div class="container-fluid">
             <div class="row">
-            <div class="col-md-12 fw-bold fs-3">Dashboard</div>
+            <div class="col-md-12 fw-bold fs-4 pb-3">Driftstatus</div>
             <div class="row">
                 <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title text-center">Nylig historikk</h5>
+                        <h5 class="card-title pb-2">Nylig historikk</h5>
                         <div class="card-text">
                            <div id="historikk"></div>
                         </div>
-                        <a href="#" class="btn btn-primary">All Historikk</a>
+                        <a href="#" class="btn form-control btn-primary costumbtn">All Historikk</a>
                     </div>
                 </div>
             </div>
@@ -104,11 +107,11 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title text-center">VM Oversikt elns</h5>
+                        <h5 class="card-title pb-2">VM Oversikt</h5>
                         <div class="card-text">
                             <div id="host"></div>
                         </div>
-                        <a href="deployment.html" class="btn btn-primary">Til Deployment</a>
+                        <a href="deployment.html" class="btn form-control btn-primary costumbtn">Til Deployment</a>
                     </div>
                 </div>
             </div>
