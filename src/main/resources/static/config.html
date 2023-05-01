@@ -13,7 +13,7 @@
     <script src="isLoggIn.js"></script>
     <link rel="stylesheet" href="stylesheet.css">
 </head>
-<body onload="getInventoryList()">
+<body onload="getHostList(), getPlaybookList()">
 <!---top-nav--->
 <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container-fluid">
@@ -87,119 +87,30 @@
 <!---rekke med vm, rekke med cluster -> Fortsett nederst --->
 
 <main class="py-3">
+    <!---3x3 rekker med kort--->
+    <div class="col-sm-12">
+        <div class="content_area">
+            <h1 class="row_title fs-5">Konfigurer eksisterende clusters</h1>
+            <p1 class="text-muted">Velg clusters du ønsker å konfigurere</p1>
+            <div class="row" id="host">
 
-<!---3x3 rekker med kort--->
-            <div class="col-sm-12">
-                <div class="content_area">
-                    <div class="row">
-                        <h1 class="row_title fs-5">Konfigurer eksisterende clusters</h1>
-                        <p1 class="text-muted">Velg clusters du ønsker å konfigurere</p1>
-<!---Kort nr 1--->
-                        <div class="col-sm-3">
-                            <div class="card_area">
-                                <input class="checkbox" type="checkbox"/>
-                                <div class="single_card">
-                                    <div class="card_body">
-                                        <div class="text-center"><img src="img/ubuntu.png" class="box-icon"></div>
-                                        <div class="card_title">
-                                            <h3>Ubuntu 22.04 LTS "Web Server</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-<!---kort nr1 slutt--->
-
-<!---Kort nr 2--->
-                        <div class="col-sm-3">
-                            <div class="card_area">
-                                <input class="checkbox" type="checkbox"/>
-                                <div class="single_card">
-                                    <div class="card_body">
-                                        <div class="text-center"><img src="img/terraform.png" class="box-icon"></div>
-                                        <div class="card_title">
-                                            <h3>Amazon Linux "Terraform"</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-<!---kort nr2 slutt--->
-
-<!---Kort nr 3--->
-                        <div class="col-sm-3">
-                            <div class="card_area">
-                                <input class="checkbox" type="checkbox"/>
-                                <div class="single_card">
-                                    <div class="card_body">
-                                        <div class="text-center"><img src="img/ansible.png" class="box-icon"></div>
-                                        <div class="card_title">
-                                            <h3>RHEL9 "Ansible"</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-<!---kort nr3 slutt, rekke nr 1 slutt--->
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <h1 class="row_title fs-5">Velg konfigurasjon for clusters</h1>
+                    <p1 class="text-muted">Velg konfigurasjoner du ønsker å utføre på valgte clusters.</p1>
+                    <div class="row" id="playbook">
                     </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <h1 class="row_title fs-5">Velg konfigurasjon for clusters</h1>
-                            <p1 class="text-muted">Velg konfigurasjoner du ønsker å utføre på valgte clusters.</p1>
-                            <div class="row">
-
-                                    <!---Kort nr 1--->
-                                    <div class="col-sm-3">
-                                        <div class="card_area">
-                                            <input class="checkbox" type="checkbox"/>
-                                            <div class="single_card">
-                                                <div class="card_body cluster1">
-                                                    <div class="text-center"><img src="img/databaser.png" class="box-icon"></div>
-                                                    <div class="card_title">
-                                                        <h3>Patch oppdateringer</h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!---kort nr 2--->
-                                    <div class="col-sm-3">
-                                        <div class="card_area">
-                                            <input class="checkbox" type="checkbox"/>
-                                            <div class="single_card">
-                                                <div class="card_body cluster2">
-                                                    <div class="text-center"><img src="img/databaser.png" class="box-icon"></div>
-                                                    <div class="card_title">
-                                                        <h3>Nginx installering</h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!---kort nr3 --->
-                                    <div class="col-sm-3">
-                                        <div class="card_area">
-                                            <input class="checkbox" type="checkbox"/>
-                                            <div class="single_card">
-                                                <div class="card_body cluster3">
-                                                    <div class="text-center"><img src="img/databaser.png" class="box-icon"></div>
-                                                    <div class="card_title">
-                                                        <h3>Sikkerthetskopiering</h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                        </div>
-                    </div>
-                    <div clss="row">
+                </div>
+            </div>
+            <div clss="row">
+                        <h1 class="row_title fs-5"></h1>
                         <div class="col-sm-9">
                             <button class="btn form-control btn-primary costumbtn">Konfigurer utvalgte</button>
                         </div>
                     </div>
-                </div>
-            </div>
+        </div>
+    </div>
 </main>
 <script src="config.js"></script>
 </body>
