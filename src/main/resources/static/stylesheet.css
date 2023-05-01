@@ -51,6 +51,10 @@ body{
     }
 }
 
+.navbar {
+    background-color: white;
+}
+
 .menu-gradient-active {
     background: transparent linear-gradient(to left, #FFFFFF 70%, #95C11F 100%);
 }
@@ -60,7 +64,8 @@ body{
 }
 
 .pil {
-
+    float: right;
+    margin-left: 50px;
 }
 
 .costumbtn {
@@ -85,7 +90,7 @@ body{
 
 .card_area{position: relative;margin-bottom: 30px;}
 .single_card{
-    border:1px solid #32abd2;
+    border:1px solid black;
     border-radius: 10px;
     -webkit-transition: all 0.3s linear;
     -moz-transition: all 0.3s linear;
@@ -95,16 +100,16 @@ body{
     transition: all 0.3s linear;
 }
 .card_title{
-    padding: 10px;
+    padding: 5px;
     text-align: center;
-    background-color: #32abd2;
+    background-color: black;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
 }
 .card_title h3{
     font-size: 16px;
     font-weight: 400;
-    color: black;
+    color: white;
     margin-bottom: 0;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
@@ -137,7 +142,6 @@ body{
 .checkbox:checked ~ .single_card .card_body {color: black;}
 
 .continueBtn{
-    max-width: 370px;
     background-color: #32abd2;
     color: white;
     font-size: 18px;
