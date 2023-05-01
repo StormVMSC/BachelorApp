@@ -4,6 +4,11 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
+import java.time.DateTimeException;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.List;
 import java.util.ArrayList;
@@ -80,7 +85,11 @@ public class AnsibleAPIRepository {
                 for (JsonNode hostNode : resultsNode) {
                         int id = hostNode.get("id").asInt();
                         String hostName = hostNode.get("name").asText();
-                        Host newHost = new Host(id, hostName);
+                        JsonNode summary_fields = hostNode.get("summary_fields");
+                        JsonNode last_job = summary_fields.get("last_job");
+                        String date = last_job.get("finished").asText();
+                        
+                        Host newHost = new Host(id, hostName, dateFormatter(date));
                         hostList.add(newHost);
                 }
                 return hostList;
@@ -440,6 +449,14 @@ public class AnsibleAPIRepository {
                         playbookList.add(playbook);
                 }
                 return playbookList;
+        }
+
+        private String dateFormatter(String date){
+                Instant instant = Instant.parse(date);
+                ZoneId zone = ZoneId.of("Europe/Oslo");
+                ZonedDateTime zonedDateTime = instant.atZone(zone);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                return zonedDateTime.format(formatter);
         }
 }
 
