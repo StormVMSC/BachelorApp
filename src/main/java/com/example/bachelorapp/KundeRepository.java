@@ -64,8 +64,8 @@ public class KundeRepository{
         Kunde kunde = db.queryForObject(sql, new Object[]{username}, new BeanPropertyRowMapper<>(Kunde.class));
         if(kunde != null && sjekkPassord(passord, kunde.getPassord())){
 
-            //String auth = Ansible.getAuthToken(username, passord);
-            session.setAttribute("auth", "yes");
+            String auth = Ansible.getAuthToken(username, passord);
+            session.setAttribute("auth", auth);
             String sessionId = UUID.randomUUID().toString();
             kunde.setSessionId(sessionId);
             updateSessionId(kunde);
