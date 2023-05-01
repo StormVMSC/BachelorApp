@@ -98,6 +98,7 @@ public class KundeRepository{
     @PostConstruct
     private void brukerInsert(){
         registrer("admin", "redhat");
+        registrer("BrukerA","PassordA");
     }
 }
 

@@ -24,9 +24,9 @@ public class AnsibleAPIController {
         return repo.getInventory(session);
     }
 
-    @PostMapping("/PatchFlere")
-    public void patchSomeCall(Patch patch, HttpSession session) throws IOException {
-        repo.patchSomeCall(patch, session);
+    @PostMapping("/Configure")
+    public void configurate(Patch patch, HttpSession session) throws IOException {
+        repo.configurate(patch, session);
     }
 
     @GetMapping("/GetHistorikk")

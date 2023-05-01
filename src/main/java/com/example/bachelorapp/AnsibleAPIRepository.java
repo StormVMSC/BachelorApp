@@ -61,10 +61,8 @@ public class AnsibleAPIRepository {
 
                 // Set headers for the request, including the authorization token
                 httpGet.setHeader("Content-type", "application/json");
-                //httpGet.setHeader("Authorization", "Bearer " + authToken);
-                String username = "BrukerA";
-                String passord = "PassordA";
-                httpGet.setHeader("Authorization","Basic " + Base64.getEncoder().encodeToString((username + ":" + passord).getBytes()));
+                httpGet.setHeader("Authorization", "Bearer " + authToken);
+
 
                 // Execute the request and get the response
                 CloseableHttpResponse response = httpClient.execute(httpGet);
@@ -196,7 +194,7 @@ public class AnsibleAPIRepository {
         }
 
 
-        public void patchSomeCall(Patch patchData, HttpSession session) throws IOException {
+        public void configurate(Patch patchData, HttpSession session) throws IOException {
 
                 String authToken = (String) session.getAttribute("auth");
 
@@ -296,7 +294,7 @@ public class AnsibleAPIRepository {
 
                 HttpPost request = new HttpPost( "https://18.134.222.22/api/v2/schedules/");
                 request.addHeader("content-type", "application/json");
-                request.setHeader("Authorization","Basic " + Base64.getEncoder().encodeToString((username + ":" + passord).getBytes()));
+                request.setHeader("Authorization","Bearer " + authToken);
 
                 //String rrule = "DTSTART;TZID=Europe/Oslo:" + scheduleData.getDato() + "T" + scheduleData.getTid() + " RRULE:FREQ=" + scheduleData.getFrekvens() + ";INTERVAL=" + scheduleData.getIntervall();
                 String hostName = String.join(",", scheduleData.getHosts());
@@ -332,8 +330,6 @@ public class AnsibleAPIRepository {
 
                 String authToken = (String) session.getAttribute("auth");
 
-                String username = "admin";
-                String passord = "redhat";
 
                 SSLContext  sslContext = null;
                 try{
@@ -349,7 +345,7 @@ public class AnsibleAPIRepository {
 
                 HttpDelete request = new HttpDelete( "https://18.134.222.22/api/v2/schedules/" + id + "/");
                 request.addHeader("content-type", "application/json");
-                request.setHeader("Authorization","Basic " + Base64.getEncoder().encodeToString((username + ":" + passord).getBytes()));
+                request.setHeader("Authorization","Bearer " + authToken);
 
                 CloseableHttpResponse response = httpClient.execute(request);
                 String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
@@ -363,10 +359,6 @@ public class AnsibleAPIRepository {
                 List<Schedule> scheduleList = new ArrayList<>();
 
                 String authToken = (String) session.getAttribute("auth");
-
-                String username = "admin";
-                String passord = "redhat";
-
                 SSLContext  sslContext = null;
                 try{
                         sslContext = createSSLContext();
@@ -381,7 +373,7 @@ public class AnsibleAPIRepository {
 
                 HttpGet httpGet = new HttpGet("https://" + url + "/api/v2/schedules/");
                 httpGet.setHeader("Content-type", "application/json");
-                httpGet.setHeader("Authorization","Basic " + Base64.getEncoder().encodeToString((username + ":" + passord).getBytes()));
+                httpGet.setHeader("Authorization","Bearer " + authToken);
 
                 CloseableHttpResponse response = httpClient.execute(httpGet);
                 ObjectMapper mapper = new ObjectMapper();
@@ -410,9 +402,6 @@ public class AnsibleAPIRepository {
                 return scheduleList;
         }
 
-
-
-
         public List<Playbook> getPlaybook(HttpSession session) throws IOException {
                 List<Playbook> playbookList = new ArrayList<>();
 
@@ -435,7 +424,7 @@ public class AnsibleAPIRepository {
 
                 HttpGet httpGet = new HttpGet("https://" + url + "/api/v2/job_templates/");
                 httpGet.setHeader("Content-type", "application/json");
-                httpGet.setHeader("Authorization","Basic " + Base64.getEncoder().encodeToString((username + ":" + passord).getBytes()));
+                httpGet.setHeader("Authorization","Bearer " + authToken);
 
                 CloseableHttpResponse response = httpClient.execute(httpGet);
                 ObjectMapper mapper = new ObjectMapper();
