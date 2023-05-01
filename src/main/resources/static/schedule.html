@@ -90,13 +90,15 @@
 
 <!---sideinnhold under--->
 
+<!---tittelrad--->
 <main class="pt-5 mt-3">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-12 fw-bold  fs-3 text-center">Scheduling</div>
+      <div class="col-md-12 fw-bold  fs-4 pb-2">Scheduling</div>
     </div>
 
-    <form>
+<!---form rad 1--->
+    <form class="form-control">
     <div class="row text-center mt-3">
       <div class="col-md-5 fs-6">
         <label for="inpFrekven">Ønsket frekvens</label>
@@ -109,13 +111,12 @@
           <option value="Monthly">Monthly</option>
         </select>
       </div>
-
-      <div class="col-md-1 fs-6"></div>
-
+      <div class="col-md-1 fs-6"></div><!---mellomrom--->
       <div class="col-md-5 fs-6">
         <div id="host" class="text-center">Velg host</div></div>
       </div>
 
+<!---form-rad-2--->
       <div class="row text-center mt-3">
         <div class="col-md-5 fs-6">
           <div class="form-group">
@@ -123,9 +124,7 @@
             <input type="text" class="form-control" id="inpNavn">
           </div>
         </div>
-
-        <div class="col-md-1 fs-6"></div>
-
+        <div class="col-md-1 fs-6"></div> <!---mellomrom--->
         <div class="col-md-5 fs-6">
           <div class="form-group">
             <label for="inpDato">Dato (yyyymmdd):</label>
@@ -141,36 +140,34 @@
             <input type="text" class="form-control" id="inpTid">
           </div>
         </div>
-
-        <div class="col-md-1 fs-6"></div>
-
+        <div class="col-md-1 fs-6"></div><!---mellomrom--->
         <div id="playbook" class="col-md-5 fs-6"></div>
       </div>
 
+<!---form-rad-3--->
       <div class="row text-center mt-3">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 fs-6">
+        <div class="col-md-5 fs-6">
+          <div class="col-md-1"></div>
           <div class="form-group">
             <label for="inpIntervall">Ønsket intervall</label>
             <input type="text" class="form-control" id="inpIntervall">
           </div>
         </div>
-        <div class="col-md-3"></div>
+        <div class="col-md-5"></div>
       </div>
 
       <div class="row text-center mt-3">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 fs-6">
-          <button type="button" class="btn btn-success" onclick="sendSchedule()">Schedule</button>
+        <div class="col-md-5 fs-6">
+          <button type="button" class="btn form-control btn-success custombtn" onclick="sendSchedule()">Schedule</button>
         </div>
-        <div class="col-md-3"></div>
+        <div class="col-md-7"></div>
       </div>
 
-      <div class="row">
-        <div class="col-md-6">
+      <div class="row mt-3">
+        <div class="col-md-12">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title text-center">Nylig historikk</h5>
+              <h5 class="card-title fs-4">Nylig historikk</h5>
               <div class="card-text">
                 <div id="schedules"></div>
               </div>
