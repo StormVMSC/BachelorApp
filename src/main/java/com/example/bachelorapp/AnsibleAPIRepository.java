@@ -87,10 +87,16 @@ public class AnsibleAPIRepository {
                         String hostName = hostNode.get("name").asText();
                         JsonNode summary_fields = hostNode.get("summary_fields");
                         JsonNode last_job = summary_fields.get("last_job");
-                        String date = last_job.get("finished").asText();
-                        String status = last_job.get("status").asText();
+                        String date = null;
+                        String status = null;
+                        String formatedDate = null;
+                        if(last_job != null){
+                                date = last_job.get("finished").asText();
+                                status = last_job.get("status").asText();
+                                formatedDate = dateFormatter(date);
+                        }
                         
-                        Host newHost = new Host(id, hostName, dateFormatter(date), status);
+                        Host newHost = new Host(id, hostName, formatedDate, status);
                         hostList.add(newHost);
                 }
                 return hostList;
@@ -261,7 +267,7 @@ public class AnsibleAPIRepository {
                         .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
                         .build();
 
-                HttpGet httpGet = new HttpGet("https://" + url + "/api/v2/jobs/");
+                HttpGet httpGet = new HttpGet("https://" + url + "/api/v2/jobs/?page_size=1000000");
                 httpGet.setHeader("Content-type", "application/json");
                 httpGet.setHeader("Authorization", "Bearer " + authToken);
 
