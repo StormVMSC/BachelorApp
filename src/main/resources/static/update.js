@@ -23,7 +23,6 @@ function formatHostList(data){
         "<tr>" +
         '<th scope="col">#</th>'+
         '<th scope="col">Host</th>'+
-        '<th scope="col">Oppdater</th>'+
         "</tr>";
     for(let host of data){
         ut += "<tr>" +

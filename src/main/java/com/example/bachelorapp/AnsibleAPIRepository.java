@@ -88,8 +88,9 @@ public class AnsibleAPIRepository {
                         JsonNode summary_fields = hostNode.get("summary_fields");
                         JsonNode last_job = summary_fields.get("last_job");
                         String date = last_job.get("finished").asText();
+                        String status = last_job.get("status").asText();
                         
-                        Host newHost = new Host(id, hostName, dateFormatter(date));
+                        Host newHost = new Host(id, hostName, dateFormatter(date), status);
                         hostList.add(newHost);
                 }
                 return hostList;
@@ -276,7 +277,7 @@ public class AnsibleAPIRepository {
                         String inventory = historikkNode.get("inventory").asText();
                         String startTime = historikkNode.get("started").asText();
                         String finnishTime =  historikkNode.get("finished").asText();
-                        Historikk historikk = new Historikk(id, navn, status, inventory, startTime, finnishTime);
+                        Historikk historikk = new Historikk(id, navn, status, inventory, dateFormatter(startTime), dateFormatter(finnishTime));
                         historikkList.add(historikk);
                 }
 

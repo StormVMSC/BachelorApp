@@ -6,11 +6,14 @@ public class Host {
 
     private String date;
 
+    private String status;
 
-    public Host(int id, String name, String date) {
+
+    public Host(int id, String name, String date, String status) {
         this.id = id;
         this.name = name;
         this.date = date;
+        this.status = status;
     }
 
     public int getId() {
@@ -37,4 +40,11 @@ public class Host {
         this.date = date;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
