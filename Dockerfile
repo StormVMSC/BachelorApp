@@ -27,6 +27,7 @@ ENV PATH $PATH:/opt/gradle/bin
 
 # Clone the Spring project from GitHub
 RUN git clone https://github.com/StormVMSC/BachelorApp.git /app
+RUN cd /app && git checkout deployment-branch
 
 # Build the Spring project with Gradle
 WORKDIR /app
