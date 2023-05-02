@@ -67,7 +67,7 @@ function formatHostList(data){
         "</tr>";
     for(let host of data){
         ut += "<tr>" +
-            "<th scope='row'>"+ host.id +"</th>" +
+            "<td>"+ host.id +"</td>" +
             "<td>"+ host.name +"</td>" +
             "</tr>";
     }
