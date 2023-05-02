@@ -11,7 +11,7 @@ function getData() {
 
 
 function formaterData (playbook, host){
-    console.log(host, playbook[0].id);
+    let hostList = [];
     let ut = "<table class='table table-striped'>" +
         "<tr>" +
         '<th scope="col">#</th>'+
@@ -24,8 +24,11 @@ function formaterData (playbook, host){
             "<td>"+ hosts.name +"</td>" +
             "<td><button onclick='sendPatch(\""+ playbook[0].id + "\", \"" + hosts.name +"\")' class='btn-success'>Oppdater</button></td>" +
         "</tr>";
+        hostList.push(hosts.name);
     }
-    ut += "</table>";
+    console.log(hostList);
+    ut += "</table>" +
+    "<button onclick='sendPatch(\""+ playbook[0].id + "\", \"" + hostList +"\")' class='btn-success'>Oppdater alle</button>";
     $("#host").html(ut);
 }
 
