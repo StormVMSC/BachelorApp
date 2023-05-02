@@ -1,0 +1,9 @@
+2023-05-02 21:25:33 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "KUNDE" not found (this database is empty); SQL statement:
+SELECT * FROM Kunde WHERE username = ? [42104-214]
+2023-05-02 21:26:26 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "KUNDE" not found (this database is empty); SQL statement:
+SELECT * FROM Kunde WHERE username = ? [42104-214]
+2023-05-02 21:32:58 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "KUNDE" not found (this database is empty); SQL statement:
+SELECT * FROM Kunde WHERE username = ? [42104-214]

@@ -1,18 +1,19 @@
 package com.example.bachelorapp;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
+@Table(name="KUNDE")
 public class Kunde {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name  = "USERNAME")
     private String username;
+    @Column(name = "PASSORD")
     private String passord;
+    @Column(name = "SESSIONID")
     private String sessionId;
 
     public Kunde(String navn, String passord) {
