@@ -162,7 +162,7 @@ function sendSchedule() {
         rrule: "DTSTART;TZID=Europe/Oslo:" + dato + "T" + tid + " RRULE:FREQ=" + frekvens + ";INTERVAL=" + intervall
     };
 
-    console.log(schedule);
+
 
     $.ajax( {
         type: "POST",

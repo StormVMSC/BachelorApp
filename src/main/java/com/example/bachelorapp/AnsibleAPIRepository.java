@@ -293,8 +293,6 @@ public class AnsibleAPIRepository {
         public void schedulePatch(Schedule scheduleData, HttpSession session) throws IOException {
                 String authToken = (String) session.getAttribute("auth");
 
-                String username = "BrukerA";
-                String passord = "PassordA";
 
                 SSLContext  sslContext = null;
                 try{
@@ -423,8 +421,6 @@ public class AnsibleAPIRepository {
 
                 String authToken = (String) session.getAttribute("auth");
 
-                String username = "BrukerA";
-                String passord = "PassordA";
 
                 SSLContext  sslContext = null;
                 try{
