@@ -36,7 +36,7 @@ import java.io.IOException;
 
 @Repository
 public class AnsibleAPIRepository {
-        private static final String url = "172.31.33.158";
+        private static final String url = "18.134.222.22";
 
         // this method returns a list of Host objects by making an API call to Ansible
         public List<Host> getHostList(HttpSession session) throws Exception {

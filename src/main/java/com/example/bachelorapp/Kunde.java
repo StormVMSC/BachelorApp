@@ -13,7 +13,7 @@ public class Kunde {
     private String username;
     @Column(name = "PASSORD")
     private String passord;
-    @Column(name = "SESSIONID")
+    @Column(name = "SESSION_ID")
     private String sessionId;
 
     public Kunde(String navn, String passord) {
