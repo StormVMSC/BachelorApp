@@ -81,6 +81,10 @@ public class AnsibleAPIRepository {
                 // Get the "results" node from the JSON object
                 JsonNode resultsNode = rootNode.get("results");
 
+                if (resultsNode.isEmpty() || resultsNode == null) {
+                        throw new NullPointerException("Ingen resultater for hosts!!");
+                }
+
                 // Loop through each host node in the results and add it to the hostList
                 for (JsonNode hostNode : resultsNode) {
                         int id = hostNode.get("id").asInt();
@@ -139,6 +143,10 @@ public class AnsibleAPIRepository {
                 // Get the "results" node from the JSON object
                 JsonNode resultsNode = rootNode.get("results");
 
+                if (resultsNode.isEmpty() || resultsNode == null) {
+                        throw new NullPointerException("Ingen resultater for inventories!!");
+                }
+
                 // Loop through each host node in the results and add it to the hostList
                 for (JsonNode inventoryNode : resultsNode) {
                         int id = inventoryNode.get("id").asInt();
@@ -189,7 +197,7 @@ public class AnsibleAPIRepository {
                         authToken = rootNode.get("token").asText();
                         return authToken;
                 } else {
-                        throw new RuntimeException(response.toString());
+                        throw new RuntimeException("Kunne ikke finne auth-token!!");
                 }
         }
 
@@ -206,11 +214,20 @@ public class AnsibleAPIRepository {
                         public void checkServerTrusted(X509Certificate[] certs, String authType) {
                         }
                 }}, new SecureRandom());
+
+                if (sslContext == null) {
+                        throw new NullPointerException("SSL_context er NULL!!");
+                }
+
                 return sslContext;
         }
 
 
         public void configurate(Patch patchData, HttpSession session) throws IOException {
+
+                if (patchData == null || patchData.getHosts().isEmpty()) {
+                        throw new NullPointerException("Dataen som sendes til server er TOM!!");
+                }
 
                 String authToken = (String) session.getAttribute("auth");
 
@@ -245,9 +262,14 @@ public class AnsibleAPIRepository {
                 CloseableHttpResponse response = httpClient.execute(request);
                 String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
 
-                if (responseString != null) {
-                        System.out.println(responseString);
+                if (responseString.isEmpty()) {
+                        throw new NullPointerException("Patch response er tom!!");
                 }
+
+                if (responseString.equals("{\"detail\":\"Not found.\"}")) {
+                        throw new NullPointerException("Fant ikke playbook!!");
+                }
+                System.out.println(responseString);
         }
 
 
@@ -276,6 +298,10 @@ public class AnsibleAPIRepository {
                 JsonNode jsonNode = mapper.readTree(response.getEntity().getContent());
                 JsonNode resultsNode = jsonNode.get("results");
 
+                if (resultsNode.isEmpty() || resultsNode == null) {
+                        throw new NullPointerException("Ingen resultater for historikk!!");
+                }
+
                 for (JsonNode historikkNode : resultsNode) {
                         int id = historikkNode.get("id").asInt();
                         String navn = historikkNode.get("name").asText();
@@ -291,10 +317,13 @@ public class AnsibleAPIRepository {
         }
 
         public void schedulePatch(Schedule scheduleData, HttpSession session) throws IOException {
-                String authToken = (String) session.getAttribute("auth");
 
-                String username = "BrukerA";
-                String passord = "PassordA";
+                if (scheduleData == null || scheduleData.getHosts().isEmpty() || scheduleData.getNavn().isEmpty() || scheduleData.getPlaybookId().isEmpty() || scheduleData.getRrule().isEmpty()) {
+                        throw new NullPointerException("Dataen som sendes til server er TOM!!");
+                }
+
+
+                String authToken = (String) session.getAttribute("auth");
 
                 SSLContext  sslContext = null;
                 try{
@@ -312,7 +341,6 @@ public class AnsibleAPIRepository {
                 request.addHeader("content-type", "application/json");
                 request.setHeader("Authorization","Bearer " + authToken);
 
-                //String rrule = "DTSTART;TZID=Europe/Oslo:" + scheduleData.getDato() + "T" + scheduleData.getTid() + " RRULE:FREQ=" + scheduleData.getFrekvens() + ";INTERVAL=" + scheduleData.getIntervall();
                 String hostName = String.join(",", scheduleData.getHosts());
 
                 JSONObject extraVars = new JSONObject();
@@ -396,6 +424,9 @@ public class AnsibleAPIRepository {
                 JsonNode jsonNode = mapper.readTree(response.getEntity().getContent());
                 JsonNode resultsNode = jsonNode.get("results");
 
+                if (resultsNode.isEmpty() || resultsNode == null) {
+                        throw new NullPointerException("Ingen resultater for schedules!!");
+                }
 
                 for (JsonNode scheduleNode : resultsNode) {
                         int id = scheduleNode.get("id").asInt();
@@ -423,8 +454,6 @@ public class AnsibleAPIRepository {
 
                 String authToken = (String) session.getAttribute("auth");
 
-                String username = "BrukerA";
-                String passord = "PassordA";
 
                 SSLContext  sslContext = null;
                 try{
@@ -447,6 +476,10 @@ public class AnsibleAPIRepository {
                 JsonNode jsonNode = mapper.readTree(response.getEntity().getContent());
                 JsonNode resultsNode = jsonNode.get("results");
 
+                if (resultsNode.isEmpty() || resultsNode == null) {
+                        throw new NullPointerException("Ingen resultater for playbooks!!");
+                }
+
 
                 for (JsonNode playbookNode : resultsNode) {
                         int id = playbookNode.get("id").asInt();
@@ -459,6 +492,10 @@ public class AnsibleAPIRepository {
         }
 
         private String dateFormatter(String date){
+                if (date.isEmpty() || date == null) {
+                        throw new NullPointerException("Dato er tom!!");
+                }
+
                 Instant instant = Instant.parse(date);
                 ZoneId zone = ZoneId.of("Europe/Oslo");
                 ZonedDateTime zonedDateTime = instant.atZone(zone);

@@ -1,57 +1,44 @@
+function getData() {
+    const promise1 = $.ajax({ url: "/GetPlaybooks", method: "GET" });
+    const promise2 = $.ajax({ url: "/GetHostList", method: "GET" });
 
-
-
-function getHostList(){
-    $.ajax({
-        url: "/GetHostList",
-        method: "GET",
-        success: function(data) {
-            // Handle successful response
-            console.log(data); // This will print the response to the console
-            data.sort((a, b) => a.id - b.id);
-            formatHostList(data);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            // Handle error response
-            console.error(errorThrown); // This will print the error to the console
-        }
+    Promise.all([promise1, promise2]).then(([playbook, host]) => {
+        formaterData(playbook, host);
+    }).catch((error) => {
+        console.log(error);
     });
 }
 
-function formatHostList(data){
+
+function formaterData (playbook, host){
+    let hostList = [];
     let ut = "<table class='table table-striped'>" +
         "<tr>" +
         '<th scope="col">#</th>'+
         '<th scope="col">Host</th>'+
+        '<th scope="col">Oppdater</th>'+
         "</tr>";
-    for(let host of data){
+    for(let hosts of host){
         ut += "<tr>" +
-            "<th scope='row'>"+ host.id +"</th>" +
-            "<td>"+ host.name +"</td>" +
+            "<th scope='row'>"+ hosts.id +"</th>" +
+            "<td>"+ hosts.name +"</td>" +
+            "<td><button onclick='sendPatch(\""+ playbook[0].id + "\", \"" + hosts.name +"\")' class='btn-success'>Oppdater</button></td>" +
         "</tr>";
+        hostList.push(hosts.name);
     }
-    ut += "</table>";
+    console.log(hostList);
+    ut += "</table>" +
+    "<button onclick='sendPatch(\""+ playbook[0].id + "\", \"" + hostList +"\")' class='btn-success'>Oppdater alle</button>";
     $("#host").html(ut);
 }
 
-function sendPatch() {
+function sendPatch(playId, hostName) {
     let patch = {
-        jobId: 22,
-        username: "BrukerA",
-        password: "PassordA",
-        hosts: ["Host A (1)", "Host A (2)"]
+        jobId: playId,
+        hosts: hostName
     };
 
-    $.ajax({
-        type: "POST",
-        url: "/PatchFlere",
-        data: JSON.stringify(patch),
-        contentType: "application/json",
-        success: function () {
-            console.log("Sendt");
-        },
-        error: function (xhr, status, error) {
-            console.log("Feil: " + error);
-        }
-    });
+    $.post("/Configure", patch, function(){
+        console.log("patched");
+    })
 }
