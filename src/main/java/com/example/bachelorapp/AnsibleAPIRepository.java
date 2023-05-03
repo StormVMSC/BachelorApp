@@ -440,7 +440,7 @@ public class AnsibleAPIRepository {
                                 hosts.add(extraDataNode.has("host_name") ? extraDataNode.get("host_name").asText() : "N/A");
                         }
                         else {
-                                hosts.add("hmm");
+                                hosts.add("N/A");
                         }
 
                         Schedule schedule = new Schedule(id, navn, rrule, playbookId, hosts);
