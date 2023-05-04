@@ -13,6 +13,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpSession;
 import org.apache.http.client.methods.HttpDelete;
 import org.json.JSONArray;
@@ -100,6 +101,72 @@ public class AnsibleAPIRepository {
                                 formatedDate = dateFormatter(date);
                         }
                         
+                        Host newHost = new Host(id, hostName, formatedDate, status);
+                        hostList.add(newHost);
+                }
+                return hostList;
+        }
+
+        public List<Host> getInventoryHost(HttpSession session, int inventoryId) throws IOException {
+                // Create an empty ArrayList to store the host
+                List<Host> hostList = new ArrayList<>();
+
+                String authToken = (String) session.getAttribute("auth");
+                // Get the Authorization token needed to authenticate the API
+
+
+                // Create an SSL context to disable SSL
+                SSLContext sslContext = null;
+                try {
+                        sslContext = createSSLContext();
+                } catch (NoSuchAlgorithmException | KeyManagementException e) {
+                        e.printStackTrace();
+                }
+
+                //Create an HTTP cliens using the custom SSL context and ignore hostname authentication
+                CloseableHttpClient httpClient = HttpClients.custom()
+                        .setSSLContext(sslContext)
+                        .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+                        .build();
+
+                // Create an HTTP GET request to fetch the list of hosts
+                HttpGet httpGet = new HttpGet("https://" + url + "/api/v2/inventories/"+ inventoryId +"/hosts");
+
+                // Set headers for the request, including the authorization token
+                httpGet.setHeader("Content-type", "application/json");
+                httpGet.setHeader("Authorization", "Bearer " + authToken);
+
+
+                // Execute the request and get the response
+                CloseableHttpResponse response = httpClient.execute(httpGet);
+
+                // Convert the response to a String
+                String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+
+                // Parse the response String as a JSON object using an ObjectMapper
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode rootNode = mapper.readTree(responseString);
+                // Get the "results" node from the JSON object
+                JsonNode resultsNode = rootNode.get("results");
+                System.out.println(resultsNode);
+                if(resultsNode == null){
+                        return null;
+                }
+                // Loop through each host node in the results and add it to the hostList
+                for (JsonNode hostNode : resultsNode) {
+                        int id = hostNode.get("id").asInt();
+                        String hostName = hostNode.get("name").asText();
+                        JsonNode summary_fields = hostNode.get("summary_fields");
+                        JsonNode last_job = summary_fields.get("last_job");
+                        String date = null;
+                        String status = null;
+                        String formatedDate = null;
+                        if(last_job != null){
+                                date = last_job.get("finished").asText();
+                                status = last_job.get("status").asText();
+                                formatedDate = dateFormatter(date);
+                        }
+
                         Host newHost = new Host(id, hostName, formatedDate, status);
                         hostList.add(newHost);
                 }
