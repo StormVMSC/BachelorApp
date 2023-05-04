@@ -1,95 +1,109 @@
 
-function getHostList(){
-    $.ajax({
-        url: "/GetHostList",
-        method: "GET",
-        success: function(data) {
-            // Handle successful response
-            console.log(data); // This will print the response to the console
-            data.sort((a, b) => a.id - b.id);
-            formatHostList(data);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            // Handle error response
-            console.error(errorThrown); // This will print the error to the console
-        }
+let inventoryAndHostList = [];
+
+function getInventoryList(){
+    $.get("/getInventory", function(data){
+        let promises = [];
+        console.log(data)
+       for(let inventory of data){
+           let promise = new Promise(function(resolve){
+               $.ajax( {
+                   type: "POST",
+                   url: "/postInventoryHost",
+                   data: JSON.stringify(inventory.id),
+                   contentType: "application/json",
+                   success: function (hostList) {
+                       addInventoryList(inventory, hostList)
+                       resolve();
+                   }
+               });
+           });
+           promises.push(promise);
+       }
+       Promise.all(promises).then(function(){
+           formatInventoryList();
+       });
     });
 }
 
-function formatHostList(data){
-    let ut = "";
-    for(let host of data){
-        ut +="<div class='col-sm-3'>\n" +
-            "    <div class='card_area'>\n" +
-            "        <input class='checkbox' type='checkbox' name='host' value='"+ host.name +"'/>\n" +
-            "        <div class='single_card'>\n" +
-            "            <div class='card_body cluster1'>\n" +
-            "                <div class='text-center'><img src='img/databaser.png' class='box-icon'></div>\n" +
-            "                <div class='card_title'>\n" +
-            "                    <h3>"+ host.name +"</h3>\n" +
-            "                </div>\n" +
-            "            </div>\n" +
-            "        </div>\n" +
-            "    </div>\n" +
-            "</div>"
-            ;
+function addInventoryList(inventory, hostList){
+    let object ={
+        inventory: inventory,
+        hostList: hostList
     }
-    $("#host").html(ut);
+    console.log(object)
+    inventoryAndHostList.push(object);
+    console.log(inventoryAndHostList)
 }
 
-function getPlaybookList(){
-    $.ajax({
-        url: "/GetPlaybooks",
-        method: "GET",
-        success: function(data) {
-            // Handle successful response
-            console.log(data); // This will print the response to the console
-            data.sort((a, b) => a.id - b.id);
-            formatPlaybookList(data);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            // Handle error response
-            console.error(errorThrown); // This will print the error to the console
+ function formatInventoryList() {
+    let ut = '';
+    for(let inventoryList of inventoryAndHostList){
+        if(inventoryList.inventory == null){
+            continue
+        }
+        ut += ' <div class="accordion" id="accordion'+ inventoryList.inventory.id +'">\n' +
+            '                        <div class="accordion-item">';
+        ut += '<h2 class="accordion-header">\n' +
+            '       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse'+ inventoryList.inventory.id +'" aria-expanded="true" aria-controls="collapseOne">\n' +
+            inventoryList.inventory.name +
+            '       </button>\n' +
+            '   </h2>'+
+            '<div id="collapse'+ inventoryList.inventory.id +'" class="accordion-collapse collapse" data-bs-parent="#accordion'+ inventoryList.inventory.id +'">\n' +
+            '                                <div class="accordion-body table-responsive">\n' +
+            '                                    <table class="table">';
+        ut += '<thead>\n' +
+            '    <tr>\n' +
+            '        <th scope="col" class="col-md-4">#</th>\n' +
+            '        <th scope="col" class="col-md-4">host</th>\n' +
+            '        <th scope="col" class="col-md-4">\n' +
+            '            <input class="form-check-input primary" type="checkbox" id="inventory'+ inventoryList.inventory.id +'">\n' +
+            '            <label class="form-check-label" for="inventory'+ inventoryList.inventory.id +'">\n' +
+            '                all\n' +
+            '            </label>\n' +
+            '        </th>\n' +
+            '    </tr>\n' +
+            '    </thead>' +
+            '<tbody>';
+        for(let host of inventoryList.hostList){
+            ut += '<tr>\n' +
+                '      <th scope="row">'+ host.id +'</th>\n' +
+                '      <td>'+ host.name +'</td>\n' +
+                '      <td>\n' +
+                '          <input class="form-check-input secondary" type="checkbox" id="'+ host.name +'">\n' +
+                '          <label class="form-check-label" for="'+ host.name +'">\n' +
+                '          </label>\n' +
+                '      </td>\n' +
+                '   </tr>'
+        }
+        ut += '                                         </tbody>\n' +
+            '                                    </table>\n' +
+            '                                </div>\n' +
+            '                            </div>\n' +
+            '                        </div>\n' +
+            '                    </div>';
+    }
+    $("#inventory").html(ut);
+
+     checkButton();
+}
+
+function checkButton(){
+    $(".form-check-input").not(".primary").on("change", function() {
+        var $primaryCheckbox = $(this).closest(".table").find(".primary");
+        var checkedSecondaryCheckboxes = $(this).closest(".table").find(".form-check-input").not(".primary:checked").length;
+        if (checkedSecondaryCheckboxes > 0) {
+            $primaryCheckbox.prop("indeterminate", true);
+        } else {
+            $primaryCheckbox.prop("indeterminate", false);
+            $primaryCheckbox.prop("checked", true);
         }
     });
-}
-
-function formatPlaybookList(data){
-    let ut = "";
-    for( let playbook of data){
-        ut +="<div class='col-sm-3'>\n" +
-            "    <div class='card_area'>\n" +
-            "        <input class='checkbox' type='radio' id='"+ playbook.navn +"' name='playbookRadio' value='"+ playbook.id +"'/>\n" +
-            "        <div class='single_card'>\n" +
-            "            <div class='card_body cluster1'>\n" +
-            "                <div class='text-center'><img src='img/databaser.png' class='box-icon'></div>\n" +
-            "                <div class='card_title'>\n" +
-            "                    <h3>"+ playbook.navn +"</h3>\n" +
-            "                </div>\n" +
-            "            </div>\n" +
-            "        </div>\n" +
-            "    </div>\n" +
-            "</div>"
-            ;
-    }
-    $("#playbook").html(ut);
-}
-
-function postKonfigurasjon(){
-    const  check1 = $('input[name=host]:checked').map(function(){
-        return $(this).val();
-    }).get();
-    const check2 = $('input[name=playbookRadio]:checked').val()
-    console.log(check1)
-    console.log(check2)
 
 
-    const Patch = {
-        jobId : check2,
-        hosts : check1
-    }
-
-    $.post("/Configure", Patch, function(){
-        console.log("patched");
+    $('.primary').click(function(){
+        var table = $(this).closest('table');
+        var secondary = table.find('.secondary');
+        secondary.prop('checked', $(this).prop('checked'));
     })
 }
