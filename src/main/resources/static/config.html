@@ -4,17 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Konfigurasjon</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://kit.fontawesome.com/b37b51c753.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <script src="isLoggIn.js"></script>
     <script src="config.js"></script>
+    <script src="schedule.js"></script>
     <link rel="stylesheet" href="stylesheet.css">
+
 </head>
-<body onload="getInventoryList()">
+<body onload="getInventoryList(), getPlaybookList()">
     <!---top-nav--->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container-fluid">
@@ -94,8 +100,89 @@
             <div class="row">
                 <div class="col-12 py-3">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-primary">skeduler</button>
-                        <button type="button" class="btn btn-primary">konfigurer nå</button>
+                        <button class="btn btn-primary"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseKonfig"
+                                aria-expanded="false"
+                                aria-controls="collapseKonfig">
+                            konfigurer
+                        </button>
+                    </div>
+                </div>
+                <div class="col-12 py-3">
+                    <div class="collapse" id="collapseKonfig">
+                        <div class="col-md-12 col-lg-12 col-xl-10 card card-body">
+                            <form class="form-controll">
+                                <div class="row text-center mt-3">
+                                    <div class="col-md-5 fs-6">
+                                        <label for="inpFrekven">Ønsket frekvens</label>
+                                        <select id="inpFrekven" class="form-control text-center">
+                                            <option selected>Velg intervall</option>
+                                            <option value="Daily">Daily</option>
+                                            <option value="Weekly">Weekly</option>
+                                            <option value="Monthly">Monthly</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1 fs-6"></div><!---mellomrom--->
+                                    <div class="col-md-5 fs-6">
+                                        <div class="form-group">
+                                            <label for="inpDato">Dato:</label>
+                                            <div class="input-group date" id="datepicker">
+                                                <input type="text" class="form-control" id="inpDato"/>
+                                                <span class="input-group-append">
+                                                    <span class="input-group-text bg-light d-block">
+                                                    <i class="fa fa-calendar"></i>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row text-center mt-3">
+                                    <div class="col-md-5 fs-6">
+                                        <div class="form-group">
+                                            <label for="inpNavn">Schedule navn:</label>
+                                            <input type="text" class="form-control" id="inpNavn">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 fs-6"></div> <!---mellomrom--->
+                                    <div class="col-md-5 fs-6">
+                                        <div class="form-group">
+                                            <label for="inpTid">Ønsket tidsrom (hhmmss)</label>
+                                            <input type="text" class="form-control" id="inpTid">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row text-center mt-3">
+                                    <div class="col-md-5 fs-6" id="playbook"></div>
+                                    <div class="col-md-1 fs-6"></div><!---mellomrom--->
+                                </div>
+
+                                <div class="row text-center mt-3">
+                                    <div class="col-md-5 fs-6">
+                                        <button type="button"
+                                                class="btn form-control btn-success custombtn"
+                                                onclick="postKonfigurasjon()"
+                                        >
+                                            kjør nå
+                                        </button>
+                                    </div>
+                                    <div class="col-md-1 fs-6"></div><!---mellomrom--->
+                                    <div class="col-md-5 fs-6">
+                                        <button type="button"
+                                                class="btn form-control btn-success custombtn"
+                                                onclick="sendSchedule()"
+                                        >
+                                            kjør senere
+                                        </button>
+                                    </div>
+                                    <div class="col-md-7"></div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

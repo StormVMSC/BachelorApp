@@ -1,6 +1,8 @@
 
 let inventoryAndHostList = [];
 
+
+
 function getInventoryList(){
     $.get("/getInventory", function(data){
         let promises = [];
@@ -105,5 +107,27 @@ function checkButton(){
         var table = $(this).closest('table');
         var secondary = table.find('.secondary');
         secondary.prop('checked', $(this).prop('checked'));
+    })
+}
+
+$(function(){
+    $("#datepicker").datepicker();
+});
+
+function postKonfigurasjon(){
+
+    const checked = [];
+    $('.secondary[type=checkbox].secondary:checked').each(function(){
+        checked.push($(this).attr('id'));
+    });
+
+    const playbook = $("#inpPlaybook").val();
+    const Patch = {
+        jobId : playbook,
+        hosts : checked
+    }
+
+    $.post("/Configure", Patch, function(){
+        console.log("patched");
     })
 }

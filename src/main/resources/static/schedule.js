@@ -1,6 +1,5 @@
 function loadSchedule() {
     getScheduleList();
-    getPlaybookList();
     getHostList();
 }
 
@@ -57,14 +56,15 @@ function getScheduleList() {
 }
 
 function formatPlaybookList(data){
-    let ut = "<label for=\"inpPlaybook\">Ønsket Playbook</label>" +
+    let ut ="<div class='form-group'>" +
+        "<label for=\"inpPlaybook\">Ønsket Playbook</label>" +
         "<select id=\"inpPlaybook\" class=\"form-control text-center\">" +
         "<option selected>Velg playbook</option>";
 
     for(let playbook of data){
         ut += "<option value='"+ playbook.id +"'> " + playbook.navn + "</option>";
     }
-    ut += "</select>";
+    ut += "</select></div>";
     $("#playbook").html(ut);
 }
 
@@ -151,15 +151,17 @@ function getCheckboxValues() {
 function sendSchedule() {
 
     let frekvens = document.getElementById("inpFrekven").value;
-    let intervall = document.getElementById("inpIntervall").value;
+    let intervall = 1;
     let dato = document.getElementById("inpDato").value;
     let tid = document.getElementById("inpTid").value;
+
+    const formatteddato = formatDato(dato);
 
     let schedule = {
         playbookId: document.getElementById("inpPlaybook").value,
         navn: document.getElementById("inpNavn").value,
-        hosts: getCheckboxValues(),
-        rrule: "DTSTART;TZID=Europe/Oslo:" + dato + "T" + tid + " RRULE:FREQ=" + frekvens + ";INTERVAL=" + intervall
+        hosts: listhost(),
+        rrule: "DTSTART;TZID=Europe/Oslo:" + formatteddato + "T" + tid + " RRULE:FREQ=" + frekvens + ";INTERVAL=" + intervall + ";COUNT=1"
     };
 
 
@@ -178,6 +180,12 @@ function sendSchedule() {
     });
 }
 
+function formatDato(dato){
+    const [day, month, year] = dato.split('/');
+
+    return year+month+day;
+}
+
 function deleteSchedule(id) {
     $.ajax( {
         type: "POST",
@@ -191,4 +199,12 @@ function deleteSchedule(id) {
             console.log("Feil" + error);
         }
     });
+}
+
+function listhost(){
+    const checked = [];
+    $('.secondary[type=checkbox].secondary:checked').each(function(){
+        checked.push($(this).attr('id'));
+    })
+    return checked;
 }
