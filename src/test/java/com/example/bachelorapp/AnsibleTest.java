@@ -58,25 +58,36 @@ public class AnsibleTest{
 
     @Test
     void testGetHostList() throws Exception {
-        // Create mock objects
+        // Lager mock objekter
         CloseableHttpResponse response = mock(CloseableHttpResponse.class);
         HttpEntity entity = mock(HttpEntity.class);
-        JsonNode rootNode = mock(JsonNode.class);
-        JsonNode resultsNode = mock(JsonNode.class);
 
-        // Set up mock objects to return appropriate values
+        // setter opp mock objektene til å returnere forventede verdiene
         when(httpClient.execute(Mockito.any(HttpGet.class))).thenReturn(response);
         when(response.getEntity()).thenReturn(entity);
-        when(entity.getContent()).thenReturn(new ByteArrayInputStream("{\"results\": [{\"id\": 1, \"name\": \"host1\", \"summary_fields\": {\"last_job\": {\"finished\": \"2023-05-09T12:34:56.789Z\", \"status\": \"success\"}}}]}".getBytes()));
-        
+        when(entity.getContent()).thenReturn(new ByteArrayInputStream(
+                ("{\"results\": " +
+                        "[{\"id\": 1, " +
+                        "\"name\": \"host1\", " +
+                        "\"summary_fields\": {" +
+                        "\"last_job\": {" +
+                        "\"finished\": \"2023-05-09T12:34:56.789Z\", " +
+                        "\"status\": \"success\"" +
+                        "}}}]}").getBytes()
+                ));
+
+        //kaller metoden for å bli testa på og lagre resultatene
         List<Host> hostList = ansibleRep.getHostList(session);
+
+        //setter opp forventet variabler for hosten
         Host expectedHost = new Host(1, "host1", "09/05/2023", "success");
+
+        //tester ut ved å sammenligne forventet host og returnete host
         assertEquals(1, hostList.size());
         assertEquals(expectedHost.getId(), hostList.get(0).getId());
         assertEquals(expectedHost.getName(), hostList.get(0).getName());
         assertEquals(expectedHost.getDate(), hostList.get(0).getDate());
         assertEquals(expectedHost.getStatus(), hostList.get(0).getStatus());
-
     }
 
 
