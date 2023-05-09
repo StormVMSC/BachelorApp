@@ -1,12 +1,12 @@
 package com.example.bachelorapp;
 
 public class Host {
-    private int id;
-    private String name;
+        private int id;
+        private String name;
 
-    private String date;
+        private String date;
 
-    private String status;
+        private String status;
 
 
     public Host(int id, String name, String date, String status) {
