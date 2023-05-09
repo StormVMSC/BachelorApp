@@ -14,6 +14,10 @@ public class KundeController {
     @Autowired
     KundeRepository rep;
 
+    public KundeController(KundeRepository rep){
+        this.rep = rep;
+    }
+
     @PostMapping("/registrer")
     public boolean registrer(String username, String password){
         return rep.registrer(username, password);
