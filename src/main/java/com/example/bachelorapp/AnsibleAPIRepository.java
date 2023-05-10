@@ -123,7 +123,7 @@ public class AnsibleAPIRepository {
                 JsonNode rootNode = mapper.readTree(responseString);
                 // Get the "results" node from the JSON object
                 JsonNode resultsNode = rootNode.get("results");
-                System.out.println(resultsNode);
+
                 if (resultsNode == null || resultsNode.isEmpty()) {
                         throw new NullPointerException("Ingen resultater for hosts i inventory!!");
                 }

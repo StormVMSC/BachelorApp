@@ -734,7 +734,7 @@ public class AnsibleTest{
         });
 
         assertEquals("Dato er tom!!", exception.getMessage());
-        assertEquals(NullPointerException.class, exception);
+        assertEquals(NullPointerException.class, exception.getClass());
     }
 
 
