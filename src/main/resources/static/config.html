@@ -4,97 +4,336 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Konfigurasjon</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://kit.fontawesome.com/b37b51c753.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <script src="isLoggIn.js"></script>
+    <script src="config.js"></script>
+    <script src="schedule.js"></script>
     <link rel="stylesheet" href="stylesheet.css">
+
 </head>
-<body onload="getHostList(), getPlaybookList()">
-<!---top-nav--->
-<nav class="navbar navbar-expand-lg fixed-top">
-    <div class="container-fluid">
-        <!---logo--->
-        <a class="navbar-brand me-2 px-1 link-dark" href="https://www.soprasteria.no/"><img src="img/SopraSteriaCropped.png" width="120px;"></a>
+<body onload="getInventoryList(), getPlaybookList()">
+    <!---top-nav--->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid">
+            <!---logo--->
+            <a class="navbar-brand me-2 px-1 link-dark" href="https://www.soprasteria.no/"><img src="img/SopraSteriaCropped.png" class="logo-nav" width="150px;"></a>
 
-        <!---trigger sidebar --->
-        <button class="navbar-toggler me-auto btn btn-outline-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas" aria-expanded="false" aria-label="Toggle navigation">
-            <span><i class="bi bi-justify"></i></span>
-        </button>
+            <!---trigger sidebar --->
+            <button class="navbar-toggler me-auto btn btn-outline-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas" aria-expanded="false" aria-label="Toggle navigation">
+                <span><i class="bi bi-justify"></i></span>
+            </button>
 
-        <!---collapse--->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span><i class="bi bi-person-fill"></i></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <!---collapse--->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span><i class="bi bi-person-fill"></i></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
-                <!---søk--->
-                <form class="d-flex" role="search">
-                    <div class="input-group my-3 my-lg-0">
-                        <input class="form-control" type="search" placeholder="Søk" aria-label="Search">
-                        <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
-                    </div>
-                </form>
+                    <!---søk--->
+                    <form class="d-flex" role="search">
+                        <div class="input-group my-3 my-lg-0">
+                            <input class="form-control" type="search" placeholder="Søk" aria-label="Search">
+                            <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
+                        </div>
+                    </form>
 
-                <!---Admin-profil--->
-                <li class="nav-item dropdown">
-                    <a class="nav-link link-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-person-fill"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="login.html" onclick="logout()">Logg out</a></li>
-                    </ul>
-                </li>
-            </ul>
+                    <!---Admin-profil--->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link link-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-fill"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="login.html" onclick="logout()">Logg out</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!---offcanvas-sidebar--->
+    <div class="offcanvas offcanvas-start sidebar-menu" tabindex="-1" id="offcanvas" aria-labelledby="offcanvas">
+        <div class="offcanvas-body">
+            <nav class="navbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link link-dark px-3 menu-gradient-inactive"><span class="me-3"><i class="bi bi-speedometer fa-lg-3 "></i></span><span>Dashboard</span><span><i class="bi bi-chevron-compact-right pil"></i></span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="status.html" class="nav-link link-dark px-3 menu-gradient-inactive"><span class="me-3"><i class="bi bi-graph-up"></i></span><span>Status</span><i class="bi bi-chevron-compact-right pil"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="config.html" class="nav-link link-dark px-3 menu-gradient-active"><span class="me-3"><i class="bi bi-tools"></i></span><span>Konfigurasjoner</span><i class="bi bi-chevron-compact-right pil"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="update.html" class="nav-link link-dark px-3 menu-gradient-inactive"><span class="me-3"><i class="bi bi-arrow-repeat"></i></span><span>Oppdateringer</span><i class="bi bi-chevron-compact-right pil"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="Historikk.html" class="nav-link link-dark px-3 menu-gradient-inactive"><span class="me-3"><i class="bi bi-rocket"></i></span><span>Historikk</span><i class="bi bi-chevron-compact-right pil"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="schedule.html" class="nav-link link-dark px-3 menu-gradient-inactive"><span class="me-3"><i class="bi bi-alarm"></i></span><span>Scheduling</span><i class="bi bi-chevron-compact-right pil"></i></a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
-</nav>
+    <!---rekke med vm, rekke med cluster -> Fortsett nederst --->
 
-<!---offcanvas-sidebar--->
-<div class="offcanvas offcanvas-start sidebar-menu" tabindex="-1" id="offcanvas" aria-labelledby="offcanvas">
-    <div class="offcanvas-body p-0">
-        <nav class="navbar">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a href="index.html" class="nav-link link-dark px-3 menu-gradient-inactive"><span class="me-3"><i class="bi bi-speedometer fa-lg-3 "></i></span><span>Dashboard</span><span><i class="bi bi-chevron-compact-right pil"></i></span></a>
-                </li>
-                <li class="nav-item">
-                    <a href="status.html" class="nav-link link-dark px-3 menu-gradient-inactive"><span class="me-3"><i class="bi bi-graph-up"></i></span><span>Status</span><i class="bi bi-chevron-compact-right pil"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a href="config.html" class="nav-link link-dark px-3 menu-gradient-active"><span class="me-3"><i class="bi bi-tools"></i></span><span>Konfigurasjoner</span><i class="bi bi-chevron-compact-right pil"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a href="update.html" class="nav-link link-dark px-3 menu-gradient-inactive"><span class="me-3"><i class="bi bi-arrow-repeat"></i></span><span>Oppdateringer</span><i class="bi bi-chevron-compact-right pil"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a href="Historikk.html" class="nav-link link-dark px-3 menu-gradient-inactive"><span class="me-3"><i class="bi bi-rocket"></i></span><span>Historikk</span><i class="bi bi-chevron-compact-right pil"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a href="schedule.html" class="nav-link link-dark px-3 menu-gradient-inactive"><span class="me-3"><i class="bi bi-alarm"></i></span><span>Scheduling</span><i class="bi bi-chevron-compact-right pil"></i></a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-</div>
-<!---rekke med vm, rekke med cluster -> Fortsett nederst --->
+    <main class="mt-4 py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12"><h1>Cluster gruppe konfigurering</h1></div>
+            </div>
+            <div class="row">
+                <div class="col-12 py-3">
+                    <div class="btn-group">
+                        <button class="btn btn-primary"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseKonfig"
+                                aria-expanded="false"
+                                aria-controls="collapseKonfig">
+                            Konfigurer
+                        </button>
+                    </div>
+                </div>
+                <div class="col-12 py-3">
+                    <div class="collapse" id="collapseKonfig">
+                        <div class="col-md-12 col-lg-12 col-xl-10 card card-body">
+                            <form class="form-controll">
+                                <div class="row text-center mt-3">
+                                    <div class="col-md-5 fs-6">
+                                        <label for="inpFrekven">Ønsket frekvens</label>
+                                        <select id="inpFrekven" class="form-control text-center">
+                                            <option selected>Velg intervall</option>
+                                            <option value="Daily">Daily</option>
+                                            <option value="Weekly">Weekly</option>
+                                            <option value="Monthly">Monthly</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1 fs-6"></div><!---mellomrom--->
+                                    <div class="col-md-5 fs-6">
+                                        <div class="form-group">
+                                            <label for="inpDato">Dato:</label>
+                                            <div class="input-group date" id="datepicker">
+                                                <input type="text" class="form-control" id="inpDato"/>
+                                                <span class="input-group-append">
+                                                    <span class="input-group-text bg-light d-block">
+                                                    <i class="fa fa-calendar"></i>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-<main class="py-3">
-    <!---3x3 rekker med kort--->
-    <div class="col-sm-12">
+                                <div class="row text-center mt-3">
+                                    <div class="col-md-5 fs-6">
+                                        <div class="form-group">
+                                            <label for="inpNavn">Schedule navn:</label>
+                                            <input type="text" class="form-control" id="inpNavn">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 fs-6"></div> <!---mellomrom--->
+                                    <div class="col-md-5 fs-6">
+                                        <div class="form-group">
+                                            <label for="inpTid">Ønsket tidsrom (hhmmss)</label>
+                                            <input type="text" class="form-control" id="inpTid">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row text-center mt-3">
+                                    <div class="col-md-5 fs-6" id="playbook"></div>
+                                    <div class="col-md-1 fs-6"></div><!---mellomrom--->
+                                </div>
+
+                                <div class="row text-center mt-3">
+                                    <div class="col-md-5 fs-6">
+                                        <button type="button"
+                                                class="btn form-control btn-success custombtn"
+                                                onclick="postKonfigurasjon()"
+                                        >
+                                            kjør nå
+                                        </button>
+                                    </div>
+                                    <div class="col-md-1 fs-6"></div><!---mellomrom--->
+                                    <div class="col-md-5 fs-6">
+                                        <button type="button"
+                                                class="btn form-control btn-success custombtn"
+                                                onclick="sendSchedule()"
+                                        >
+                                            kjør senere
+                                        </button>
+                                    </div>
+                                    <div class="col-md-7"></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-xl-10" id="inventory">
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    inventory
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">First</th>
+                                            <th scope="col">Last</th>
+                                            <th scope="col">Handle</th>
+                                            <th scope="col">
+                                                <input class="form-check-input primary" type="checkbox" id="0">
+                                                <label class="form-check-label" for="inventory">
+                                                    Primary Checkbox
+                                                </label>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                            <td>@mdo</td>
+                                            <td>
+                                                <input class="form-check-input secondary" type="checkbox" id="secondaryCheckbox1">
+                                                <label class="form-check-label" for="secondaryCheckbox1">
+                                                    Secondary Checkbox 1
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">2</th>
+                                            <td>Jacob</td>
+                                            <td>Thornton</td>
+                                            <td>@fat</td>
+                                            <td>
+                                                <input class="form-check-input secondary" type="checkbox" id="secondaryCheckbox2">
+                                                <label class="form-check-label" for="secondaryCheckbox2">
+                                                    Secondary Checkbox 2
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">3</th>
+                                            <td colspan="2">Larry the Bird</td>
+                                            <td>@twitter</td>
+                                            <td>
+                                                <input class="form-check-input secondary" type="checkbox" id="secondaryCheckbox3">
+                                                <label class="form-check-label" for="secondaryCheckbox3">
+                                                    Secondary Checkbox 3
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion" id="accordionExample2">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsetwo" aria-expanded="true" aria-controls="collapsetwo">
+                                    inventory
+                                </button>
+                            </h2>
+                            <div id="collapsetwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample2">
+                                <div class="accordion-body">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">First</th>
+                                            <th scope="col">Last</th>
+                                            <th scope="col">Handle</th>
+                                            <th scope="col">
+                                                <input class="form-check-input primary" type="checkbox" id="inventory1">
+                                                <label class="form-check-label" for="inventory1">
+                                                    Primary Checkbox
+                                                </label>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                            <td>@mdo</td>
+                                            <td>
+                                                <input class="form-check-input secondary" type="checkbox" id="1">
+                                                <label class="form-check-label" for="1">
+                                                    Secondary Checkbox 1
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">2</th>
+                                            <td>Jacob</td>
+                                            <td>Thornton</td>
+                                            <td>@fat</td>
+                                            <td>
+                                                <input class="form-check-input secondary" type="checkbox" id="2">
+                                                <label class="form-check-label" for="2">
+                                                    Secondary Checkbox 2
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">3</th>
+                                            <td colspan="2">Larry the Bird</td>
+                                            <td>@twitter</td>
+                                            <td>
+                                                <input class="form-check-input secondary" type="checkbox" id="3">
+                                                <label class="form-check-label" for="3">
+                                                    Secondary Checkbox 3
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
+
+
+<!-- <div class="col-sm-12">
         <div class="content_area">
             <h1 class="row_title fs-5">Konfigurer eksisterende clusters</h1>
             <p1 class="text-muted">Velg clusters du ønsker å konfigurere</p1>
-            <div class="row" id="host">
-
-            </div>
+            <div class="row" id="host"></div>
             <div class="row">
                 <div class="col-sm-12">
                     <h1 class="row_title fs-5">Velg konfigurasjon for clusters</h1>
@@ -104,14 +343,10 @@
                 </div>
             </div>
             <div clss="row">
-                        <h1 class="row_title fs-5"></h1>
-                        <div class="col-sm-9">
-                            <button class="btn form-control btn-primary costumbtn" onclick="postKonfigurasjon()">Konfigurer utvalgte</button>
-                        </div>
-                    </div>
+                <h1 class="row_title fs-5"></h1>
+                <div class="col-sm-9">
+                    <button class="btn form-control btn-primary costumbtn" onclick="postKonfigurasjon()">Konfigurer utvalgte</button>
+                </div>
+            </div>
         </div>
-    </div>
-</main>
-<script src="config.js"></script>
-</body>
-</html>
+    </div> -->

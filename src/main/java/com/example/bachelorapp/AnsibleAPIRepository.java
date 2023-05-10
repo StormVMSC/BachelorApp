@@ -13,6 +13,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpSession;
 import org.apache.http.client.methods.HttpDelete;
 import org.json.JSONArray;
@@ -38,6 +39,8 @@ import java.io.IOException;
 public class AnsibleAPIRepository {
         private static final String url = "172.31.33.158";
 
+        public CloseableHttpClient httpClient = getHttpClient();
+
         // this method returns a list of Host objects by making an API call to Ansible
         public List<Host> getHostList(HttpSession session) throws Exception {
                 // Create an empty ArrayList to store the host
@@ -48,18 +51,6 @@ public class AnsibleAPIRepository {
 
 
                 // Create an SSL context to disable SSL
-                SSLContext sslContext = null;
-                try {
-                     sslContext = createSSLContext();
-                } catch (NoSuchAlgorithmException | KeyManagementException e) {
-                        e.printStackTrace();
-                }
-
-                //Create an HTTP cliens using the custom SSL context and ignore hostname authentication
-                CloseableHttpClient httpClient = HttpClients.custom()
-                        .setSSLContext(sslContext)
-                        .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-                        .build();
 
                 // Create an HTTP GET request to fetch the list of hosts
                 HttpGet httpGet = new HttpGet("https://" + url + "/api/v2/hosts/");
@@ -106,23 +97,61 @@ public class AnsibleAPIRepository {
                 return hostList;
         }
 
+        public List<Host> getInventoryHost(HttpSession session, int inventoryId) throws IOException {
+                // Create an empty ArrayList to store the host
+                List<Host> hostList = new ArrayList<>();
+
+                String authToken = (String) session.getAttribute("auth");
+                // Get the Authorization token needed to authenticate the API
+
+                // Create an HTTP GET request to fetch the list of hosts
+                HttpGet httpGet = new HttpGet("https://" + url + "/api/v2/inventories/"+ inventoryId +"/hosts");
+
+                // Set headers for the request, including the authorization token
+                httpGet.setHeader("Content-type", "application/json");
+                httpGet.setHeader("Authorization", "Bearer " + authToken);
+
+
+                // Execute the request and get the response
+                CloseableHttpResponse response = httpClient.execute(httpGet);
+
+                // Convert the response to a String
+                String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+
+                // Parse the response String as a JSON object using an ObjectMapper
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode rootNode = mapper.readTree(responseString);
+                // Get the "results" node from the JSON object
+                JsonNode resultsNode = rootNode.get("results");
+                System.out.println(resultsNode);
+                if(resultsNode == null){
+                        return null;
+                }
+                // Loop through each host node in the results and add it to the hostList
+                for (JsonNode hostNode : resultsNode) {
+                        int id = hostNode.get("id").asInt();
+                        String hostName = hostNode.get("name").asText();
+                        JsonNode summary_fields = hostNode.get("summary_fields");
+                        JsonNode last_job = summary_fields.get("last_job");
+                        String date = null;
+                        String status = null;
+                        String formatedDate = null;
+                        if(last_job != null){
+                                date = last_job.get("finished").asText();
+                                status = last_job.get("status").asText();
+                                formatedDate = dateFormatter(date);
+                        }
+
+                        Host newHost = new Host(id, hostName, formatedDate, status);
+                        hostList.add(newHost);
+                }
+                return hostList;
+        }
+
         public List<Inventory> getInventory(HttpSession session) throws IOException {
                 List<Inventory> inventoryList = new ArrayList<>();
 
                 String authToken = (String) session.getAttribute("auth");
-
-                SSLContext  sslContext = null;
-                try{
-                        sslContext = createSSLContext();
-                }catch(NoSuchAlgorithmException | KeyManagementException e){
-                        e.printStackTrace();
-                }
-
-                CloseableHttpClient httpClient = HttpClients.custom()
-                        .setSSLContext(sslContext)
-                        .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-                        .build();
-
 
                 // Create an HTTP GET request to fetch the list of hosts
                 HttpGet httpGet = new HttpGet("https://" + url + "/api/v2/inventories/");
@@ -162,20 +191,6 @@ public class AnsibleAPIRepository {
 
                 // Create a String variable for authentication token
                 String authToken = null;
-
-                // Create an SSL context to disable SSL
-                SSLContext sslContext = null;
-                try {
-                  sslContext = createSSLContext();
-                } catch (NoSuchAlgorithmException | KeyManagementException e) {
-                        e.printStackTrace();
-                }
-
-                //Create an HTTP cliens using the custom SSL context and ignore hostname authentication
-                CloseableHttpClient httpClient = HttpClients.custom()
-                        .setSSLContext(sslContext)
-                        .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-                        .build();
 
                 HttpPost httpPost = new HttpPost("https://" + url + "/api/v2/tokens/");
                 httpPost.setHeader("Content-type", "application/json");
@@ -232,18 +247,6 @@ public class AnsibleAPIRepository {
                 String authToken = (String) session.getAttribute("auth");
 
 
-                SSLContext  sslContext = null;
-                try{
-                        sslContext = createSSLContext();
-                }catch(NoSuchAlgorithmException | KeyManagementException e){
-                        e.printStackTrace();
-                }
-
-                CloseableHttpClient httpClient = HttpClients.custom()
-                        .setSSLContext(sslContext)
-                        .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-                        .build();
-
                 HttpPost request = new HttpPost( "https://"+ url + "/api/v2/job_templates/"+ patchData.getJobId() +"/launch/");
                 request.addHeader("content-type", "application/json");
                 request.setHeader("Authorization", "Bearer " + authToken);
@@ -276,18 +279,6 @@ public class AnsibleAPIRepository {
         public List<Historikk> getHistorikk(HttpSession session) throws IOException {
                 List<Historikk> historikkList = new ArrayList<>();
                 String authToken = (String) session.getAttribute("auth");
-
-                SSLContext  sslContext = null;
-                try{
-                        sslContext = createSSLContext();
-                }catch(NoSuchAlgorithmException | KeyManagementException e){
-                        e.printStackTrace();
-                }
-
-                CloseableHttpClient httpClient = HttpClients.custom()
-                        .setSSLContext(sslContext)
-                        .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-                        .build();
 
                 HttpGet httpGet = new HttpGet("https://" + url + "/api/v2/jobs/?page_size=1000000");
                 httpGet.setHeader("Content-type", "application/json");
@@ -324,18 +315,6 @@ public class AnsibleAPIRepository {
 
 
                 String authToken = (String) session.getAttribute("auth");
-
-                SSLContext  sslContext = null;
-                try{
-                        sslContext = createSSLContext();
-                }catch(NoSuchAlgorithmException | KeyManagementException e){
-                        e.printStackTrace();
-                }
-
-                CloseableHttpClient httpClient = HttpClients.custom()
-                        .setSSLContext(sslContext)
-                        .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-                        .build();
 
                 HttpPost request = new HttpPost( "https://18.134.222.22/api/v2/schedules/");
                 request.addHeader("content-type", "application/json");
@@ -374,19 +353,6 @@ public class AnsibleAPIRepository {
 
                 String authToken = (String) session.getAttribute("auth");
 
-
-                SSLContext  sslContext = null;
-                try{
-                        sslContext = createSSLContext();
-                }catch(NoSuchAlgorithmException | KeyManagementException e){
-                        e.printStackTrace();
-                }
-
-                CloseableHttpClient httpClient = HttpClients.custom()
-                        .setSSLContext(sslContext)
-                        .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-                        .build();
-
                 HttpDelete request = new HttpDelete( "https://18.134.222.22/api/v2/schedules/" + id + "/");
                 request.addHeader("content-type", "application/json");
                 request.setHeader("Authorization","Bearer " + authToken);
@@ -403,17 +369,8 @@ public class AnsibleAPIRepository {
                 List<Schedule> scheduleList = new ArrayList<>();
 
                 String authToken = (String) session.getAttribute("auth");
-                SSLContext  sslContext = null;
-                try{
-                        sslContext = createSSLContext();
-                }catch(NoSuchAlgorithmException | KeyManagementException e){
-                        e.printStackTrace();
-                }
 
-                CloseableHttpClient httpClient = HttpClients.custom()
-                        .setSSLContext(sslContext)
-                        .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-                        .build();
+
 
                 HttpGet httpGet = new HttpGet("https://" + url + "/api/v2/schedules/");
                 httpGet.setHeader("Content-type", "application/json");
@@ -440,7 +397,7 @@ public class AnsibleAPIRepository {
                                 hosts.add(extraDataNode.has("host_name") ? extraDataNode.get("host_name").asText() : "N/A");
                         }
                         else {
-                                hosts.add("hmm");
+                                hosts.add("N/A");
                         }
 
                         Schedule schedule = new Schedule(id, navn, rrule, playbookId, hosts);
@@ -453,19 +410,6 @@ public class AnsibleAPIRepository {
                 List<Playbook> playbookList = new ArrayList<>();
 
                 String authToken = (String) session.getAttribute("auth");
-
-
-                SSLContext  sslContext = null;
-                try{
-                        sslContext = createSSLContext();
-                }catch(NoSuchAlgorithmException | KeyManagementException e){
-                        e.printStackTrace();
-                }
-
-                CloseableHttpClient httpClient = HttpClients.custom()
-                        .setSSLContext(sslContext)
-                        .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-                        .build();
 
                 HttpGet httpGet = new HttpGet("https://" + url + "/api/v2/job_templates/");
                 httpGet.setHeader("Content-type", "application/json");
@@ -502,6 +446,26 @@ public class AnsibleAPIRepository {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 return zonedDateTime.format(formatter);
         }
+
+        private CloseableHttpClient getHttpClient(){
+
+                // Create an SSL context to disable SSL
+                SSLContext sslContext = null;
+                try {
+                        sslContext = createSSLContext();
+                } catch (NoSuchAlgorithmException | KeyManagementException e) {
+                        e.printStackTrace();
+                }
+
+                //Create an HTTP cliens using the custom SSL context and ignore hostname authentication
+                CloseableHttpClient httpClient = HttpClients.custom()
+                        .setSSLContext(sslContext)
+                        .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+                        .build();
+
+                return httpClient;
+        }
+
 }
 
 

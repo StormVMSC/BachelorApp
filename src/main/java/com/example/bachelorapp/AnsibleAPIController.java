@@ -19,9 +19,15 @@ public class AnsibleAPIController {
         return repo.getHostList(session);
     }
 
-    @GetMapping("/GetInventory")
+    @GetMapping("/getInventory")
     public List<Inventory> getInventories(HttpSession session) throws IOException{
         return repo.getInventory(session);
+    }
+
+    @PostMapping("/postInventoryHost")
+    public List<Host> getInventoryHost(HttpSession session, @RequestBody int id) throws IOException {
+        System.out.println(id);
+        return repo.getInventoryHost(session, id);
     }
 
     @PostMapping("/Configure")

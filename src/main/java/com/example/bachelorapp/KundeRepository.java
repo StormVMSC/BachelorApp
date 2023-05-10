@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.security.sasl.AuthenticationException;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -43,6 +44,9 @@ public class KundeRepository{
     public List<Kunde> hentAlleKunder() {
         String sql = "SELECT * FROM Kunde";
         List<Kunde> alleKunder = db.query(sql,new BeanPropertyRowMapper(Kunde.class));
+        if (alleKunder.isEmpty() || alleKunder == null) {
+            throw new NullPointerException("Kunder er tom!!");
+        }
         return alleKunder;
     }
     public void slettAlleKunder () {
@@ -51,10 +55,16 @@ public class KundeRepository{
     }
 
     private String krypterPassord(String passord){
+        if (passord == null || passord.isEmpty()) {
+            throw new NullPointerException("Passord er ugyldig!!");
+        }
         String kryptertPassord = BCrypt.hashpw(passord, BCrypt.gensalt(15));
         return kryptertPassord;
     }
     private boolean sjekkPassord(String passord, String hashPassord){
+        if (passord == null || passord.isEmpty() || hashPassord == null || hashPassord.isEmpty()) {
+            throw new NullPointerException("Feil passord!!");
+        }
         boolean ok = BCrypt.checkpw(passord, hashPassord);
         return ok;
     }
@@ -72,7 +82,7 @@ public class KundeRepository{
             session.setAttribute("kunde", kunde);
             return true;
         }
-        return false;
+        throw new AuthenticationException("Feil passord eller brukernavn!!");
     }
 
     public boolean logout(HttpSession session){
@@ -83,7 +93,7 @@ public class KundeRepository{
             session.invalidate();
             return true;
         }
-        return false;
+        throw new IllegalStateException("Kunne ikke logge ut, bruker ikke logget inn!!");
     }
 
     private void updateSessionId(Kunde kunde) {
