@@ -422,7 +422,7 @@ public class AnsibleAPIRepository {
                 JsonNode jsonNode = mapper.readTree(response.getEntity().getContent());
                 JsonNode resultsNode = jsonNode.get("results");
 
-                if (resultsNode.isEmpty() || resultsNode == null) {
+                if (resultsNode == null || resultsNode.isEmpty()) {
                         throw new NullPointerException("Ingen resultater for playbooks!!");
                 }
 
@@ -437,7 +437,7 @@ public class AnsibleAPIRepository {
                 return playbookList;
         }
 
-        private String dateFormatter(String date){
+        public String dateFormatter(String date){
                 if (date == null || date.isEmpty()) {
                         throw new NullPointerException("Dato er tom!!");
                 }

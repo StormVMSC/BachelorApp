@@ -11,6 +11,7 @@ import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 
@@ -18,6 +19,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 
 import org.apache.http.message.BasicStatusLine;
 import org.apache.http.util.EntityUtils;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -30,9 +33,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.net.ssl.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -63,6 +64,7 @@ public class AnsibleTest{
     @Test
     void contextLoads() {
     }
+
 
     @Test
     void testGetHostListOK() throws Exception {
@@ -99,7 +101,7 @@ public class AnsibleTest{
     }
 
     @Test
-    void testHostListIsEmpty() throws Exception {
+    void testHostListIsNull() throws Exception {
         // Lager mock objekter
         CloseableHttpResponse response = mock(CloseableHttpResponse.class);
         HttpEntity entity = mock(HttpEntity.class);
@@ -159,7 +161,7 @@ public class AnsibleTest{
     }
 
     @Test
-    void testInventoryHostIsEmpty() throws Exception {
+    void testInventoryHostIsNull() throws Exception {
         // Lager mock objekter
         CloseableHttpResponse response = mock(CloseableHttpResponse.class);
         HttpEntity entity = mock(HttpEntity.class);
@@ -216,7 +218,7 @@ public class AnsibleTest{
     }
 
     @Test
-    void testInventoryIsEmpty() throws Exception {
+    void testInventoryIsNull() throws Exception {
         // Lager mock objekter
         CloseableHttpResponse response = mock(CloseableHttpResponse.class);
         HttpEntity entity = mock(HttpEntity.class);
@@ -303,7 +305,37 @@ public class AnsibleTest{
     }
 
     @Test
-    void testConfigureIsEmpty() throws Exception {
+    void testConfigureOK() throws Exception {
+        // Lager mock objekter
+        CloseableHttpResponse response = mock(CloseableHttpResponse.class);
+        HttpEntity entity = mock(HttpEntity.class);
+
+        // setter opp mock objektene til å returnere forventede verdiene
+        when(httpClient.execute(Mockito.any(HttpPost.class))).thenReturn(response);
+        when(response.getEntity()).thenReturn(entity);
+        when(entity.getContent()).thenReturn(new ByteArrayInputStream(
+                ("{\"detail\": \"Success\"}").getBytes()
+        ));
+        List<String> hosts = new ArrayList<>();
+        hosts.add("Host1");
+        Patch patch = new Patch(1, hosts);
+        String expectedResponse = "{\"detail\": \"Success\"}";
+
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        ansibleRep.configurate(patch, session);
+
+        System.setOut(null);
+
+        //tester ut ved å sammenligne forventet melding og faktisk melding
+        assertEquals(expectedResponse, outContent.toString().trim());
+
+    }
+
+
+    @Test
+    void testConfigureIsNull() throws Exception {
         // Lager mock objekter
         CloseableHttpResponse response = mock(CloseableHttpResponse.class);
         HttpEntity entity = mock(HttpEntity.class);
@@ -355,7 +387,7 @@ public class AnsibleTest{
     }
 
     @Test
-    void testConfigureInnPatchErTom() throws Exception {
+    void testConfigureInnPatcIsNull() throws Exception {
         // Lager mock objekter
         CloseableHttpResponse response = mock(CloseableHttpResponse.class);
         HttpEntity entity = mock(HttpEntity.class);
@@ -417,7 +449,7 @@ public class AnsibleTest{
     }
 
     @Test
-    void testHistorikkListIsEmpty() throws Exception {
+    void testHistorikkListIsNull() throws Exception {
         // Lager mock objekter
         CloseableHttpResponse response = mock(CloseableHttpResponse.class);
         HttpEntity entity = mock(HttpEntity.class);
@@ -442,7 +474,36 @@ public class AnsibleTest{
     }
 
     @Test
-    void testSchedulePatchReponseErTom() throws Exception {
+    void testSchedulePatchOK() throws Exception {
+        // Lager mock objekter
+        CloseableHttpResponse response = mock(CloseableHttpResponse.class);
+        HttpEntity entity = mock(HttpEntity.class);
+
+        // setter opp mock objektene til å returnere forventede verdiene
+        when(httpClient.execute(Mockito.any(HttpPost.class))).thenReturn(response);
+        when(response.getEntity()).thenReturn(entity);
+        when(entity.getContent()).thenReturn(new ByteArrayInputStream(
+                ("{\"detail\": \"Success\"}").getBytes()
+        ));
+        List<String> hosts = new ArrayList<>();
+        hosts.add("Host1");
+        Schedule schedule = new Schedule(1, "34224", "1", "test", hosts);
+        String expectedResponse = "{\"detail\": \"Success\"}";
+
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        ansibleRep.schedulePatch(schedule, session);
+
+        System.setOut(null);
+
+        //tester ut ved å sammenligne forventet melding og faktisk melding
+        assertEquals(expectedResponse, outContent.toString().trim());
+    }
+
+
+    @Test
+    void testSchedulePatchReponseErNull() throws Exception {
         // Lager mock objekter
         CloseableHttpResponse response = mock(CloseableHttpResponse.class);
         HttpEntity entity = mock(HttpEntity.class);
@@ -490,6 +551,190 @@ public class AnsibleTest{
         //tester ut ved å sammenligne forventet melding og faktisk melding
         assertEquals("Dataen som sendes til server er TOM!!", exception.getMessage());
         assertEquals(NullPointerException.class, exception.getClass());
+    }
+
+    @Test
+    void testDeleteScheduleOK() throws Exception {
+        // Lager mock objekter
+        CloseableHttpResponse response = mock(CloseableHttpResponse.class);
+        HttpEntity entity = mock(HttpEntity.class);
+
+        // setter opp mock objektene til å returnere forventede verdiene
+        when(httpClient.execute(Mockito.any(HttpDelete.class))).thenReturn(response);
+        when(response.getEntity()).thenReturn(entity);
+        when(entity.getContent()).thenReturn(new ByteArrayInputStream(
+                ("{\"detail\": \"Success\"}").getBytes()
+        ));
+
+        String expectedResponse = "{\"detail\": \"Success\"}";
+
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        ansibleRep.deleteSchedule(1, session);
+
+        System.setOut(null);
+
+        //tester ut ved å sammenligne forventet melding og faktisk melding
+        assertEquals(expectedResponse, outContent.toString().trim());
+    }
+
+    @Test
+    void testDeleteScheduleResponseErNull() throws Exception {
+        // Lager mock objekter
+        CloseableHttpResponse response = mock(CloseableHttpResponse.class);
+        HttpEntity entity = mock(HttpEntity.class);
+
+        // setter opp mock objektene til å returnere forventede verdiene
+        when(httpClient.execute(Mockito.any(HttpDelete.class))).thenReturn(response);
+        when(response.getEntity()).thenReturn(entity);
+        when(entity.getContent()).thenReturn(new ByteArrayInputStream(
+                ("").getBytes()
+        ));
+
+        //Kaller metoden å lagrer faktisk melding tilbake
+        NullPointerException exception = assertThrows(NullPointerException.class, () -> {
+            ansibleRep.deleteSchedule(1, session);
+        });
+
+        //tester ut ved å sammenligne forventet melding og faktisk melding
+        assertEquals("Response er tom!!", exception.getMessage());
+        assertEquals(NullPointerException.class, exception.getClass());
+    }
+
+    @Test
+    void testGetScheduleOK() throws Exception {
+        // Lager mock objekter
+        CloseableHttpResponse response = mock(CloseableHttpResponse.class);
+        HttpEntity entity = mock(HttpEntity.class);
+
+        // setter opp mock objektene til å returnere forventede verdiene
+        when(httpClient.execute(Mockito.any(HttpGet.class))).thenReturn(response);
+        when(response.getEntity()).thenReturn(entity);
+        when(entity.getContent()).thenReturn(new ByteArrayInputStream(
+                ("{\"results\": " +
+                        "[{\"id\": 1, " +
+                        "\"name\": \"Patch\", " +
+                        "\"rrule\": \"testRR\", " +
+                        "\"unified_job_template\": \"20\", " +
+                        "\"extra_data\": {" +
+                        "\"host_name\": \"Host1\"" +
+                        "}}]}").getBytes()
+        ));
+
+        //kaller metoden for å bli testa på og lagre resultatene
+        List<Schedule> scheduleList = ansibleRep.getSchedule(session);
+        List<String> hosts = new ArrayList<>();
+        hosts.add("Host1");
+
+        //setter opp forventet variabler for hosten
+        Schedule expectedSchedule = new Schedule(1, "Patch", "testRR", "20", hosts);
+
+        //tester ut ved å sammenligne forventet host og returnete host
+        assertEquals(1, scheduleList.size());
+        assertEquals(expectedSchedule.getId(), scheduleList.get(0).getId());
+        assertEquals(expectedSchedule.getNavn(), scheduleList.get(0).getNavn());
+        assertEquals(expectedSchedule.getHosts(), scheduleList.get(0).getHosts());
+        assertEquals(expectedSchedule.getRrule(), scheduleList.get(0).getRrule());
+        assertEquals(expectedSchedule.getPlaybookId(), scheduleList.get(0).getPlaybookId());
+    }
+
+    @Test
+    void testGetScheduleResponseErNull() throws Exception {
+        // Lager mock objekter
+        CloseableHttpResponse response = mock(CloseableHttpResponse.class);
+        HttpEntity entity = mock(HttpEntity.class);
+
+        // setter opp mock objektene til å returnere forventede verdiene
+        when(httpClient.execute(Mockito.any(HttpGet.class))).thenReturn(response);
+        when(response.getEntity()).thenReturn(entity);
+        when(entity.getContent()).thenReturn(new ByteArrayInputStream(
+                ("").getBytes()
+        ));
+
+        //Kaller metoden å lagrer faktisk melding tilbake
+        NullPointerException exception = assertThrows(NullPointerException.class, () -> {
+            ansibleRep.getSchedule(session);
+        });
+
+        //tester ut ved å sammenligne forventet melding og faktisk melding
+        assertEquals("Ingen resultater for schedules!!", exception.getMessage());
+        assertEquals(NullPointerException.class, exception.getClass());
+    }
+
+    @Test
+    void testGetPlaybookOK() throws Exception {
+        // Lager mock objekter
+        CloseableHttpResponse response = mock(CloseableHttpResponse.class);
+        HttpEntity entity = mock(HttpEntity.class);
+
+        // setter opp mock objektene til å returnere forventede verdiene
+        when(httpClient.execute(Mockito.any(HttpGet.class))).thenReturn(response);
+        when(response.getEntity()).thenReturn(entity);
+        when(entity.getContent()).thenReturn(new ByteArrayInputStream(
+                ("{\"results\": " +
+                        "[{\"id\": 1, " +
+                        "\"name\": \"Patch\"" +
+                        "}]}").getBytes()
+        ));
+
+        //kaller metoden for å bli testa på og lagre resultatene
+        List<Playbook> playbookList = ansibleRep.getPlaybook(session);
+
+        //setter opp forventet variabler for hosten
+        Playbook expectedPlaybook = new Playbook(1, "Patch");
+
+        //tester ut ved å sammenligne forventet host og returnete host
+        assertEquals(1, playbookList.size());
+        assertEquals(expectedPlaybook.getId(), playbookList.get(0).getId());
+        assertEquals(expectedPlaybook.getNavn(), playbookList.get(0).getNavn());
+    }
+
+    @Test
+    void testGetPlaybookResponseErNull() throws Exception {
+        // Lager mock objekter
+        CloseableHttpResponse response = mock(CloseableHttpResponse.class);
+        HttpEntity entity = mock(HttpEntity.class);
+
+        // setter opp mock objektene til å returnere forventede verdiene
+        when(httpClient.execute(Mockito.any(HttpGet.class))).thenReturn(response);
+        when(response.getEntity()).thenReturn(entity);
+        when(entity.getContent()).thenReturn(new ByteArrayInputStream(
+                ("").getBytes()
+        ));
+
+        //Kaller metoden å lagrer faktisk melding tilbake
+        NullPointerException exception = assertThrows(NullPointerException.class, () -> {
+            ansibleRep.getPlaybook(session);
+        });
+
+        //tester ut ved å sammenligne forventet melding og faktisk melding
+        assertEquals("Ingen resultater for playbooks!!", exception.getMessage());
+        assertEquals(NullPointerException.class, exception.getClass());
+    }
+
+    @Test
+    void testDateFormatterOK() {
+        String innDato = "2023-05-10T14:30:00.000Z";
+        String expectedFormat = "10/05/2023";
+
+        String actualFormat = ansibleRep.dateFormatter(innDato);
+
+        assertEquals(expectedFormat, actualFormat);
+    }
+
+    @Test
+    void testDateFormatterInnDatoIsNull() {
+        //2023-05-10T14:30:00.000Z   10/05/2023
+        String innDato = null;
+
+        //Kaller metoden å lagrer faktisk melding tilbake
+        NullPointerException exception = assertThrows(NullPointerException.class, () -> {
+            ansibleRep.dateFormatter(innDato);
+        });
+
+        assertEquals("Dato er tom!!", exception.getMessage());
+        assertEquals(NullPointerException.class, exception);
     }
 
 
