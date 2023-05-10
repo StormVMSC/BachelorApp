@@ -32,6 +32,8 @@ body{
 
 .offcanvas {
     border: none !important;
+    font-size: 18px;
+    margin-left: -20px;
 }
 
 
@@ -56,17 +58,24 @@ body{
     background-color: white;
 }
 
+.logo-nav {
+    margin-left: -10px;
+}
+
 .menu-gradient-active {
     background: transparent linear-gradient(to left, #FFFFFF 70%, #95C11F 100%);
 }
-
 .menu-gradient-inactive {
     background: transparent linear-gradient(to left, #ffffff 70%, #e2e2e2 100%);
 }
 
 .pil {
     float: right;
-    margin-left: 50px;
+    margin-left: 20px;
+}
+
+.nav-item{
+    margin-bottom: 10px;
 }
 
 .costumbtn {
