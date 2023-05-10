@@ -72,7 +72,7 @@ public class AnsibleAPIRepository {
                 // Get the "results" node from the JSON object
                 JsonNode resultsNode = rootNode.get("results");
 
-                if (resultsNode.isEmpty() || resultsNode == null) {
+                if (resultsNode == null || resultsNode.isEmpty()) {
                         throw new NullPointerException("Ingen resultater for hosts!!");
                 }
 
@@ -124,8 +124,8 @@ public class AnsibleAPIRepository {
                 // Get the "results" node from the JSON object
                 JsonNode resultsNode = rootNode.get("results");
                 System.out.println(resultsNode);
-                if(resultsNode == null){
-                        return null;
+                if (resultsNode == null || resultsNode.isEmpty()) {
+                        throw new NullPointerException("Ingen resultater for hosts i inventory!!");
                 }
                 // Loop through each host node in the results and add it to the hostList
                 for (JsonNode hostNode : resultsNode) {
@@ -172,7 +172,7 @@ public class AnsibleAPIRepository {
                 // Get the "results" node from the JSON object
                 JsonNode resultsNode = rootNode.get("results");
 
-                if (resultsNode.isEmpty() || resultsNode == null) {
+                if (resultsNode == null || resultsNode.isEmpty()) {
                         throw new NullPointerException("Ingen resultater for inventories!!");
                 }
 
@@ -289,7 +289,7 @@ public class AnsibleAPIRepository {
                 JsonNode jsonNode = mapper.readTree(response.getEntity().getContent());
                 JsonNode resultsNode = jsonNode.get("results");
 
-                if (resultsNode.isEmpty() || resultsNode == null) {
+                if (resultsNode == null || resultsNode.isEmpty()) {
                         throw new NullPointerException("Ingen resultater for historikk!!");
                 }
 
@@ -343,9 +343,10 @@ public class AnsibleAPIRepository {
                 CloseableHttpResponse response = httpClient.execute(request);
                 String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
 
-                if (responseString != null) {
-                        System.out.println(responseString);
+                if (responseString == null || responseString.isEmpty()) {
+                        throw new NullPointerException("Ingen response for schedulePatch!!");
                 }
+                System.out.println(responseString);
 
         }
 
@@ -360,9 +361,10 @@ public class AnsibleAPIRepository {
                 CloseableHttpResponse response = httpClient.execute(request);
                 String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
 
-                if (responseString != null) {
-                        System.out.println(responseString);
+                if (responseString == null || responseString.isEmpty()) {
+                        throw new NullPointerException("Response er tom!!");
                 }
+                System.out.println(responseString);
         }
 
         public List<Schedule> getSchedule(HttpSession session) throws IOException {
@@ -381,7 +383,7 @@ public class AnsibleAPIRepository {
                 JsonNode jsonNode = mapper.readTree(response.getEntity().getContent());
                 JsonNode resultsNode = jsonNode.get("results");
 
-                if (resultsNode.isEmpty() || resultsNode == null) {
+                if (resultsNode == null || resultsNode.isEmpty()) {
                         throw new NullPointerException("Ingen resultater for schedules!!");
                 }
 
@@ -436,7 +438,7 @@ public class AnsibleAPIRepository {
         }
 
         private String dateFormatter(String date){
-                if (date.isEmpty() || date == null) {
+                if (date == null || date.isEmpty()) {
                         throw new NullPointerException("Dato er tom!!");
                 }
 
