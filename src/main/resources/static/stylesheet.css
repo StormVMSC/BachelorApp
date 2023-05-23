@@ -41,7 +41,6 @@ body{
     body{
         overflow: auto !important;
     }
-
     .sidebar-menu{
         transform: none;
         visibility: visible !important;
