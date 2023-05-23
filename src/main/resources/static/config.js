@@ -57,11 +57,11 @@ function addInventoryList(inventory, hostList){
         ut += '<thead>\n' +
             '    <tr>\n' +
             '        <th scope="col" class="col-md-4">#</th>\n' +
-            '        <th scope="col" class="col-md-4">host</th>\n' +
+            '        <th scope="col" class="col-md-4">Host</th>\n' +
             '        <th scope="col" class="col-md-4">\n' +
             '            <input class="form-check-input primary" type="checkbox" id="inventory'+ inventoryList.inventory.id +'">\n' +
             '            <label class="form-check-label" for="inventory'+ inventoryList.inventory.id +'">\n' +
-            '                all\n' +
+            '                Alle\n' +
             '            </label>\n' +
             '        </th>\n' +
             '    </tr>\n' +

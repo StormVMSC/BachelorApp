@@ -22,13 +22,13 @@ function formaterData (playbook, host){
         ut += "<tr>" +
             "<th scope='row'>"+ hosts.id +"</th>" +
             "<td>"+ hosts.name +"</td>" +
-            "<td><button onclick='sendPatch(\""+ playbook[0].id + "\", \"" + hosts.name +"\")' class='btn-success'>Oppdater</button></td>" +
+            "<td><button onclick='sendPatch(\""+ playbook[0].id + "\", \"" + hosts.name +"\")' class='btn-success costumbtn'>Oppdater</button></td>" +
         "</tr>";
         hostList.push(hosts.name);
     }
     console.log(hostList);
     ut += "</table>" +
-    "<button onclick='sendPatch(\""+ playbook[0].id + "\", \"" + hostList +"\")' class='btn-success'>Oppdater alle</button>";
+    "<button onclick='sendPatch(\""+ playbook[0].id + "\", \"" + hostList +"\")' class='btn-success costumbtn'>Oppdater alle</button>";
     $("#host").html(ut);
 }
 
