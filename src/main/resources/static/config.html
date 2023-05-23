@@ -95,12 +95,13 @@
     <main class="mt-4 py-5">
         <div class="container">
             <div class="row">
-                <div class="col-md-12"><h1>Cluster gruppe konfigurering</h1></div>
+                <div class="col-md-12">
+                    <h1 class="fw-bold fs-4">Cluster gruppekonfigurering</h1></div>
             </div>
             <div class="row">
                 <div class="col-12 py-3">
                     <div class="btn-group">
-                        <button class="btn btn-primary"
+                        <button class="btn btn-primary costumbtn"
                                 type="button"
                                 data-bs-toggle="collapse"
                                 data-bs-target="#collapseKonfig"
@@ -119,9 +120,9 @@
                                         <label for="inpFrekven">Ønsket frekvens</label>
                                         <select id="inpFrekven" class="form-control text-center">
                                             <option selected>Velg intervall</option>
-                                            <option value="Daily">Daily</option>
-                                            <option value="Weekly">Weekly</option>
-                                            <option value="Monthly">Monthly</option>
+                                            <option value="Daily">Daglig</option>
+                                            <option value="Weekly">Ukentlig</option>
+                                            <option value="Monthly">Månedlig</option>
                                         </select>
                                     </div>
                                     <div class="col-md-1 fs-6"></div><!---mellomrom--->
@@ -150,7 +151,7 @@
                                     <div class="col-md-1 fs-6"></div> <!---mellomrom--->
                                     <div class="col-md-5 fs-6">
                                         <div class="form-group">
-                                            <label for="inpTid">Ønsket tidsrom (hhmmss)</label>
+                                            <label for="inpTid">Ønsket tidsrom (ttmmss)</label>
                                             <input type="text" class="form-control" id="inpTid">
                                         </div>
                                     </div>
@@ -167,7 +168,7 @@
                                                 class="btn form-control btn-success custombtn"
                                                 onclick="postKonfigurasjon()"
                                         >
-                                            kjør nå
+                                            Kjør nå
                                         </button>
                                     </div>
                                     <div class="col-md-1 fs-6"></div><!---mellomrom--->
@@ -176,7 +177,7 @@
                                                 class="btn form-control btn-success custombtn"
                                                 onclick="sendSchedule()"
                                         >
-                                            kjør senere
+                                            Kjør senere
                                         </button>
                                     </div>
                                     <div class="col-md-7"></div>
@@ -192,7 +193,7 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    inventory
+                                    Inventar
                                 </button>
                             </h2>
                             <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
@@ -258,7 +259,7 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsetwo" aria-expanded="true" aria-controls="collapsetwo">
-                                    inventory
+                                    Inventar
                                 </button>
                             </h2>
                             <div id="collapsetwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample2">
