@@ -59,14 +59,14 @@ body{
 }
 
 .logo-nav {
-    margin-left: -10px;
+    width: 140px;
 }
 
 .menu-gradient-active {
-    background: transparent linear-gradient(to left, #FFFFFF 70%, #95C11F 100%);
+    background: transparent linear-gradient(to right, #FFFFFF 70%, #95C11F 100%);
 }
 .menu-gradient-inactive {
-    background: transparent linear-gradient(to left, #ffffff 70%, #e2e2e2 100%);
+    background: transparent linear-gradient(to right, #ffffff 70%, #e2e2e2 100%);
 }
 
 .pil {
