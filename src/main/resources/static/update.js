@@ -28,7 +28,7 @@ function formaterData (playbook, host){
     }
     console.log(hostList);
     ut += "</table>" +
-    "<button onclick='sendPatch(\""+ playbook[0].id + "\", \"" + hostList +"\")' class='btn-success costumbtn'>Oppdater alle</button>";
+    "<button onclick='sendPatch(\""+ playbook[0].id + "\", \"" + hostList +"\")' class='btn btn-primary costumbtn'>Oppdater alle</button>";
     $("#host").html(ut);
 }
 
